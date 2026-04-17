@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFSQ PB — 향 브랜드 기획안</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400&family=Montserrat:wght@200;300;400;500&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+
+/* ── GLOBAL ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #0A0A08; color: #e4dfd6; font-family: 'Montserrat', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+/* ── ANIMATIONS ── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
+.reveal-delay-3 { transition-delay: 0.36s; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { to { opacity:1; } }
+@keyframes lineExpand { to { transform:scaleX(1); } }
+@keyframes wingL { 0%,100% { transform:scaleX(1); } 50% { transform:scaleX(0.82); } }
+@keyframes wingR { 0%,100% { transform:scaleX(1); } 50% { transform:scaleX(0.82); } }
+@keyframes bfloat { 0%,100% { transform:translateY(0) rotate(0deg); } 30% { transform:translateY(-7px) rotate(2deg); } 70% { transform:translateY(-3px) rotate(-1.5deg); } }
+.wing-left  { transform-origin:right center; animation:wingL 2.8s ease-in-out infinite; }
+.wing-right { transform-origin:left center;  animation:wingR 2.8s ease-in-out infinite; }
+.bf { animation:bfloat 5s ease-in-out infinite; }
+
+/* ── NAV ── */
+.nav {
+  position:sticky; top:0; z-index:9999;
+  background:rgba(10,10,8,0.97); backdrop-filter:blur(18px);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 48px; height:52px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.nav-title { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:300; letter-spacing:5px; color:rgba(255,255,255,0.38); text-transform:uppercase; }
+.nav-links { display:flex; list-style:none; }
+.nav-links li a { display:flex; align-items:center; gap:6px; font-size:8px; font-weight:400; letter-spacing:3px; color:rgba(255,255,255,0.28); text-decoration:none; text-transform:uppercase; padding:0 14px; height:52px; border-right:1px solid rgba(255,255,255,0.05); transition:all .3s; }
+.nav-links li a:hover { color:rgba(255,255,255,0.75); background:rgba(255,255,255,0.04); }
+.ndot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+/* ── UTILS ── */
+.g-div { height:1px; background:rgba(255,255,255,0.05); }
+.max-w { max-width:1200px; margin:0 auto; }
+.pad { padding:88px 60px; }
+.eyebrow { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:5px; text-transform:uppercase; color:rgba(228,223,214,0.28); display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+.eyebrow::after { content:''; width:32px; height:1px; background:rgba(255,255,255,0.1); }
+.sec-title { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4.5vw,54px); font-weight:300; color:#f0ece6; letter-spacing:2px; line-height:1.15; margin-bottom:6px; }
+.sec-sub { font-family:'Noto Serif KR',serif; font-size:12px; font-weight:300; color:rgba(228,223,214,0.36); letter-spacing:2px; margin-bottom:48px; display:block; }
+
+/* cover stripe */ .cstripe { position:absolute; height:1px; left:60px; right:60px; } .cstripe-top { top:48px; } .cstripe-bot { bottom:48px; }
+
+
+/* ══════════════════════ COVER ══════════════════════ */
+.cover {
+  height:100vh; background:#0D0C0A;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.cover::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 65% 55% at 62% 38%,rgba(127,170,192,0.09) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 45% at 18% 78%,rgba(196,168,130,0.06) 0%,transparent 60%);
+}
+.cover-yr { position:absolute; top:52px; right:60px; font-size:9px; font-weight:300; letter-spacing:4px; color:rgba(200,190,170,0.38); opacity:0; animation:fadeIn 1s ease forwards 1.2s; }
+.cover-badge { font-size:9px; font-weight:400; letter-spacing:6px; color:rgba(200,190,170,0.42); text-transform:uppercase; margin-bottom:36px; opacity:0; animation:fadeUp 1s ease forwards .8s; }
+.cover-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,6vw,76px); font-weight:300; color:#f0ece6; letter-spacing:6px; line-height:1.15; text-align:center; opacity:0; animation:fadeUp 1.2s ease forwards 1s; }
+.cover-sub { font-family:'Noto Serif KR',serif; font-size:clamp(11px,1.3vw,14px); font-weight:300; color:rgba(200,190,170,0.52); letter-spacing:2px; margin-top:18px; text-align:center; line-height:2; opacity:0; animation:fadeUp 1s ease forwards 1.3s; }
+.cover-pills {
+  position:absolute; bottom:96px;
+  display:flex; border:1px solid rgba(255,255,255,0.07);
+  opacity:0; animation:fadeUp 1s ease forwards 1.9s;
+}
+.cpill { padding:13px 26px; border-right:1px solid rgba(255,255,255,0.07); text-decoration:none; transition:background .25s; }
+.cpill:last-child { border-right:none; }
+.cpill:hover { background:rgba(255,255,255,0.04); }
+.cpill-num { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:.2em; text-transform:uppercase; color:#333; display:block; margin-bottom:4px; }
+.cpill-name { font-size:13px; font-weight:400; display:block; margin-bottom:2px; }
+.cpill-tag { font-family:'DM Mono',monospace; font-size:7.5px; letter-spacing:.05em; }
+
+/* ══════════════════════ WHY ══════════════════════ */
+.why-section { background:#0E0D0C; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.icard { padding:26px 30px; border:1px solid rgba(255,255,255,0.07); background:rgba(255,255,255,0.02); }
+.icard-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:4px; text-transform:uppercase; color:rgba(228,223,214,0.22); display:block; margin-bottom:10px; }
+.icard-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:300; color:#d4cfc8; margin-bottom:12px; }
+.blist { list-style:none; }
+.blist li { font-size:12px; font-weight:300; line-height:2; padding-left:14px; position:relative; color:rgba(228,223,214,0.65); }
+.blist li::before { content:'—'; position:absolute; left:0; color:rgba(228,223,214,0.2); font-size:9px; top:2px; }
+.blist li strong { color:rgba(228,223,214,0.9); font-weight:500; }
+.blist li.ok strong { color:rgba(130,190,140,0.95); }
+.blist li.ng strong { color:rgba(210,90,80,0.9); }
+
+/* ══════════════════════ COMMON STRATEGY ══════════════════════ */
+.strategy-section { background:#0C0C0A; }
+.strat-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:48px; }
+.strat-card { padding:32px 36px; border:1px solid rgba(255,255,255,0.07); background:rgba(255,255,255,0.018); }
+.strat-card-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:4px; text-transform:uppercase; color:rgba(228,223,214,0.22); display:block; margin-bottom:10px; }
+.strat-card-title { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:300; color:#d8d3cc; margin-bottom:16px; }
+/* naming examples */
+.naming-examples { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+.naming-ex { font-family:'Noto Serif KR',serif; font-size:12.5px; font-weight:300; color:rgba(228,223,214,0.65); padding-left:16px; border-left:1px solid rgba(127,170,192,0.35); line-height:1.7; }
+/* price table */
+.price-tiers { display:flex; flex-direction:column; gap:0; border:1px solid rgba(255,255,255,0.06); margin-top:14px; }
+.price-row { display:grid; grid-template-columns:90px 1fr auto; gap:16px; align-items:start; padding:12px 18px; border-bottom:1px solid rgba(255,255,255,0.04); }
+.price-row:last-child { border-bottom:none; }
+.price-tier-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; }
+.price-tier-brands { font-size:11.5px; font-weight:300; color:rgba(228,223,214,0.55); line-height:1.9; }
+.price-tier-range { font-family:'DM Mono',monospace; font-size:10px; color:rgba(228,223,214,0.38); white-space:nowrap; }
+.price-gap-note { margin-top:14px; padding:14px 18px; border:1px solid rgba(127,170,192,0.25); background:rgba(127,170,192,0.04); }
+.price-gap-note p { font-size:12px; font-weight:300; color:rgba(228,223,214,0.72); line-height:1.9; }
+.price-gap-note strong { color:rgba(228,223,214,0.92); font-weight:500; }
+
+/* ══════════════════════ BRAND LABEL BAR ══════════════════════ */
+.brand-label { position:sticky; top:52px; z-index:500; display:flex; align-items:center; justify-content:center; gap:16px; padding:10px 0; font-size:8px; font-weight:500; letter-spacing:5px; text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,0.08); }
+.lv-label-bar { background:rgba(172,168,162,0.92); color:rgba(44,42,40,0.9); }
+.nn-label-bar { background:rgba(50,70,58,0.94); color:rgba(220,215,205,0.9); }
+.sa-label-bar { background:rgba(38,36,52,0.94); color:rgba(200,197,220,0.9); }
+
+/* ══════════════════════ BRAND COVER ══════════════════════ */
+.brand-cover { height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+
+/* LIVINNE — Cool Gray, silver, no navy */
+.lv-cover { background:linear-gradient(160deg,#1C1E22 0%,#111316 100%); }
+.lv-cover::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 60% 38%,rgba(200,205,210,0.10) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 15% 80%,rgba(180,185,190,0.05) 0%,transparent 60%); }
+/* subtle grain */
+.lv-cover::after { content:''; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); opacity:0.35; pointer-events:none; }
+
+.nn-cover { background:linear-gradient(160deg,#2C1F12 0%,#1A1108 100%); }
+.nn-cover::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 55% 40%,rgba(196,168,130,0.13) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 15% 78%,rgba(126,155,138,0.07) 0%,transparent 60%); }
+.nn-hanji { position:absolute; inset:0; opacity:0.05; background-image:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(196,168,130,0.6) 28px,rgba(196,168,130,0.6) 29px),repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(196,168,130,0.6) 28px,rgba(196,168,130,0.6) 29px); pointer-events:none; }
+
+.sa-cover { background:#06060E; }
+.sa-cover::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 58% 48% at 55% 40%,rgba(212,255,0,0.07) 0%,transparent 65%),radial-gradient(ellipse 40% 50% at 15% 70%,rgba(26,26,110,0.14) 0%,transparent 60%); }
+
+/* cover accent line */
+.lv-stripe { background:rgba(195,200,208,0.25); }
+.nn-stripe { background:rgba(196,168,130,0.28); }
+.sa-stripe { background:rgba(212,255,0,0.16); }
+
+.cover-badge-brand { font-size:9px; font-weight:400; letter-spacing:6px; text-transform:uppercase; margin-bottom:38px; }
+.lv-acc { color:rgba(195,200,208,0.7); }
+.nn-acc { color:rgba(196,168,130,0.7); }
+.sa-acc { color:rgba(212,255,0,0.7); }
+
+.lv-cover-ttl { font-family:'Cormorant Garamond',serif; font-size:clamp(72px,12vw,140px); font-weight:300; color:#ECEAE7; letter-spacing:16px; }
+.nn-cover-ttl { font-family:'Noto Serif KR',serif; font-size:clamp(78px,13vw,148px); font-weight:200; color:#F2EBE0; letter-spacing:0.12em; }
+.sa-cover-ttl { font-family:'Bebas Neue',sans-serif; font-size:clamp(66px,11vw,128px); color:#D4FF00; letter-spacing:9px; line-height:0.92; text-align:center; }
+
+.cover-sub-brand { font-family:'Cormorant Garamond',serif; font-size:clamp(12px,1.3vw,15px); font-style:italic; font-weight:300; letter-spacing:2px; margin-top:22px; text-align:center; }
+.lv-csub { color:rgba(195,200,208,0.58); }
+.nn-csub { color:rgba(196,168,130,0.62); }
+.sa-csub { color:rgba(180,180,140,0.62); }
+
+/* ══════════════════════ BRAND CONTENT ══════════════════════ */
+.brand-lv { background:#0D1015; position:relative; overflow:hidden; }
+.brand-nn { background:#100C07; position:relative; overflow:hidden; }
+.brand-sa { background:#07070F; position:relative; overflow:hidden; }
+.brand-inner { max-width:1200px; margin:0 auto; padding:80px 60px; position:relative; z-index:1; }
+.hbg { position:absolute; top:50%; right:-60px; transform:translateY(-50%) rotate(90deg); font-family:'Cormorant Garamond',serif; font-size:clamp(100px,15vw,180px); font-weight:300; opacity:0.025; white-space:nowrap; pointer-events:none; letter-spacing:8px; }
+
+.brand-head { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; margin-bottom:52px; }
+
+.brand-xl { display:block; margin-bottom:10px; line-height:1; }
+.lv-xl { font-family:'Cormorant Garamond',serif; font-size:clamp(50px,6.5vw,86px); font-weight:300; letter-spacing:8px; color:#C4BEB8; }
+.nn-xl { font-family:'Noto Serif KR',serif; font-size:clamp(50px,6.5vw,82px); font-weight:300; color:#C9A882; letter-spacing:0.06em; }
+.sa-xl { font-family:'Bebas Neue',sans-serif; font-size:clamp(42px,6vw,78px); color:#D4FF00; letter-spacing:5px; line-height:0.9; }
+
+.brand-ess { font-size:8px; font-weight:400; letter-spacing:5px; text-transform:uppercase; display:block; margin-bottom:22px; }
+.lv-ess { color:rgba(195,200,208,0.72); }
+.nn-ess { color:rgba(196,168,130,0.68); }
+.sa-ess { color:rgba(212,255,0,0.68); }
+
+/* hashtags */
+.hashtags { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px; }
+.htag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; padding:6px 14px; border:1px solid; }
+.lv-htag { border-color:rgba(195,200,208,0.35); color:rgba(195,200,208,0.8); }
+.nn-htag { border-color:rgba(196,168,130,0.35); color:rgba(196,168,130,0.8); }
+.sa-htag { border-color:rgba(212,255,0,0.3); color:rgba(212,255,0,0.78); }
+
+.brand-blist { list-style:none; }
+.brand-blist li { font-size:12.5px; font-weight:300; line-height:1.95; padding-left:16px; position:relative; }
+.brand-blist li::before { content:'·'; position:absolute; left:0; font-size:16px; line-height:1.55; }
+.lv-blist li { color:rgba(220,216,210,0.7); }
+.lv-blist li::before { color:rgba(195,200,208,0.55); }
+.lv-blist li strong { color:#E0DBD4; font-weight:500; }
+.nn-blist li { color:rgba(220,205,182,0.7); }
+.nn-blist li::before { color:rgba(196,168,130,0.55); }
+.nn-blist li strong { color:#DDD4C0; font-weight:500; }
+.sa-blist li { color:rgba(210,210,185,0.7); }
+.sa-blist li::before { color:rgba(212,255,0,0.45); }
+.sa-blist li strong { color:#D8D8B8; font-weight:500; }
+
+/* id cards */
+.id-cards { display:flex; flex-direction:column; gap:18px; }
+.id-card { padding-left:22px; }
+.lv-idc { border-left:1px solid rgba(195,200,208,0.38); }
+.nn-idc { border-left:1px solid rgba(196,168,130,0.38); }
+.sa-idc { border-left:1px solid rgba(212,255,0,0.28); }
+.id-lbl { font-family:'DM Mono',monospace; font-size:7.5px; letter-spacing:4px; text-transform:uppercase; display:block; margin-bottom:5px; }
+.lv-idlbl { color:rgba(195,200,208,0.68); }
+.nn-idlbl { color:rgba(196,168,130,0.68); }
+.sa-idlbl { color:rgba(212,255,0,0.58); }
+.id-val { font-family:'Cormorant Garamond',serif; font-size:15px; font-weight:300; font-style:italic; line-height:1.45; }
+.lv-idval { color:#e8e4de; }
+.nn-idval { color:#e0d8ce; }
+.sa-idval { color:#d8d8b8; }
+
+/* palette */
+.palette { display:flex; gap:18px; flex-wrap:wrap; margin-bottom:26px; }
+.sw { display:flex; flex-direction:column; align-items:center; gap:9px; }
+.sw-c { width:58px; height:58px; border-radius:50%; border:1px solid rgba(255,255,255,0.07); }
+.sw-l { font-family:'DM Mono',monospace; font-size:7.5px; letter-spacing:2px; color:rgba(228,223,214,0.42); text-transform:uppercase; text-align:center; line-height:1.6; }
+
+/* mood row */
+.mood-row { display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start; }
+.mood-ttl { font-size:14px; font-weight:300; font-style:italic; margin-bottom:10px; }
+.lv-mttl { font-family:'Cormorant Garamond',serif; color:rgba(195,200,208,0.82); }
+.nn-mttl { font-family:'Cormorant Garamond',serif; color:rgba(196,168,130,0.82); }
+.sa-mttl { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:4px; color:rgba(212,255,0,0.8); font-style:normal; }
+.mood-body { font-size:11.5px; font-weight:300; color:rgba(228,223,214,0.52); line-height:2.2; margin-bottom:14px; }
+.tags { display:flex; gap:8px; flex-wrap:wrap; }
+.tag { border:1px solid; padding:5px 12px; font-size:7.5px; letter-spacing:2.5px; text-transform:uppercase; font-family:'DM Mono',monospace; }
+.lv-tag { border-color:rgba(195,200,208,0.3); color:rgba(195,200,208,0.75); }
+.nn-tag { border-color:rgba(196,168,130,0.3); color:rgba(196,168,130,0.75); }
+.sa-tag { border-color:rgba(212,255,0,0.25); color:rgba(212,255,0,0.7); }
+
+/* why brand */
+.why-brand { padding:48px 60px; border-top:1px solid rgba(255,255,255,0.06); }
+.lv-why { background:#0C1018; }
+.nn-why { background:#130D07; }
+.sa-why { background:#05050E; }
+.why-brand-ttl { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:5px; text-transform:uppercase; margin-bottom:24px; display:flex; align-items:center; gap:12px; }
+.why-brand-ttl::after { content:''; height:1px; max-width:56px; display:inline-block; }
+.lv-wttl { color:rgba(195,200,208,0.62); }
+.lv-wttl::after { background:rgba(195,200,208,0.22); width:56px; }
+.nn-wttl { color:rgba(196,168,130,0.62); }
+.nn-wttl::after { background:rgba(196,168,130,0.22); width:56px; }
+.sa-wttl { color:rgba(212,255,0,0.58); }
+.sa-wttl::after { background:rgba(212,255,0,0.18); width:56px; }
+.why-brand-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid rgba(255,255,255,0.06); max-width:1200px; margin:0 auto; }
+.wi { padding:22px 26px; border-right:1px solid rgba(255,255,255,0.06); }
+.wi:last-child { border-right:none; }
+.wi-lbl { font-family:'DM Mono',monospace; font-size:7.5px; letter-spacing:3px; text-transform:uppercase; color:rgba(220,210,190,0.22); margin-bottom:7px; display:block; }
+.wi-val { font-size:12.5px; font-weight:300; color:rgba(220,210,190,0.72); line-height:1.85; }
+.wi-val strong { font-weight:500; color:rgba(220,210,190,0.92); }
+
+/* ══════════════════════ KEYRING PAGE ══════════════════════ */
+.keyring-section { background:#0B0B0B; }
+.kr-inner { max-width:1100px; margin:0 auto; padding:80px 60px; }
+.kr-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid rgba(255,255,255,0.07); margin-top:48px; overflow:hidden; }
+.kr-col { padding:40px 36px; border-right:1px solid rgba(255,255,255,0.07); display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; }
+.kr-col:last-child { border-right:none; }
+.kr-brand-name { font-size:11px; font-weight:400; letter-spacing:4px; text-transform:uppercase; margin-bottom:2px; }
+.kr-desc-title { font-family:'Cormorant Garamond',serif; font-size:14px; font-weight:300; font-style:italic; margin-bottom:4px; }
+.kr-desc-body { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:2px; color:rgba(220,210,190,0.4); line-height:1.8; }
+.kr-concept-tag { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; padding:5px 14px; border:1px solid; margin-top:4px; }
+.lv-kr-tag { border-color:rgba(195,200,208,0.35); color:rgba(195,200,208,0.75); }
+.nn-kr-tag { border-color:rgba(196,168,130,0.35); color:rgba(196,168,130,0.75); }
+.sa-kr-tag { border-color:rgba(212,255,0,0.3); color:rgba(212,255,0,0.72); }
+
+/* ══════════════════════ COMPARISON ══════════════════════ */
+.comp-section { background:#0A0908; }
+.comp-header { text-align:center; padding:88px 60px 64px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.comp-eyebrow { font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:5px; color:rgba(220,210,190,0.28); text-transform:uppercase; margin-bottom:18px; }
+.comp-title { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,6vw,78px); font-weight:300; color:#e8e4dc; letter-spacing:3px; margin-bottom:12px; }
+.comp-subtitle { font-family:'Noto Serif KR',serif; font-size:13px; font-weight:300; color:rgba(220,210,190,0.33); letter-spacing:2px; }
+.comp-wrap { max-width:1200px; margin:0 auto; padding:0 60px 72px; }
+.comp-heads { display:grid; grid-template-columns:180px repeat(3,1fr); border-bottom:1px solid rgba(255,255,255,0.08); padding:24px 0 20px; }
+.comp-head-blank { }
+.comp-head-brand { padding:0 26px; display:flex; flex-direction:column; gap:3px; }
+.lv-ch { background:rgba(195,200,208,0.025); border-left:1px solid rgba(195,200,208,0.08); }
+.comp-head-name { font-size:13px; font-weight:400; letter-spacing:3px; }
+.lv-hname { color:#C4BEB8; }
+.nn-hname { color:#C9A882; font-family:'Noto Serif KR',serif; }
+.sa-hname { color:#D4FF00; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:4px; }
+.comp-head-tag { font-family:'DM Mono',monospace; font-size:7.5px; letter-spacing:2px; color:rgba(220,210,190,0.28); }
+
+.comp-row { display:grid; grid-template-columns:180px repeat(3,1fr); border-bottom:1px solid rgba(255,255,255,0.045); }
+.comp-row:hover { background:rgba(255,255,255,0.012); }
+.comp-row-lbl { padding:16px 0; display:flex; align-items:center; }
+.comp-row-lbl span { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:rgba(220,210,190,0.25); }
+.comp-cell { padding:16px 26px; display:flex; align-items:center; border-left:1px solid rgba(255,255,255,0.04); }
+.lv-cell { background:rgba(195,200,208,0.022); border-left:1px solid rgba(195,200,208,0.07) !important; }
+.comp-val { font-size:12px; font-weight:300; color:rgba(220,210,190,0.7); line-height:1.75; font-family:'Noto Serif KR',serif; }
+.comp-val strong { font-weight:500; color:rgba(220,210,190,0.92); }
+
+/* ══════════════════════ PRODUCT VISUALS ══════════════════════ */
+.product-showcase-section { background:#0B0A09; }
+.ps-inner { max-width:1200px; margin:0 auto; padding:88px 60px; }
+.ps-header { text-align:center; margin-bottom:42px; }
+.ps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.ps-card { border:1px solid rgba(255,255,255,0.07); background:rgba(255,255,255,0.012); overflow:hidden; }
+.ps-image-wrap { position:relative; height:420px; overflow:hidden; background:#111; }
+.ps-image { width:100%; height:100%; object-fit:cover; display:block; transform:scale(1); transition:transform 0.9s ease; }
+.ps-card:hover .ps-image { transform:scale(1.2); }
+.ps-meta { padding:18px 20px 20px; border-top:1px solid rgba(255,255,255,0.06); }
+.ps-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:4px; text-transform:uppercase; color:rgba(220,210,190,0.28); display:block; margin-bottom:8px; }
+.ps-brand { font-size:13px; font-weight:400; letter-spacing:3px; }
+.ps-brand.lv { color:#C4BEB8; }
+.ps-brand.nn { color:#C9A882; font-family:'Noto Serif KR',serif; }
+.ps-brand.sa { color:#D4FF00; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:4px; }
+
+/* ══════════════════════ SCORE ══════════════════════ */
+.score-section { background:#0C0C0A; }
+.score-inner { max-width:1200px; margin:0 auto; padding:88px 60px; }
+.score-table { width:100%; border-collapse:collapse; margin-top:48px; border:1px solid rgba(255,255,255,0.07); }
+.score-table th { padding:14px 20px; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; font-weight:400; border-bottom:1px solid rgba(255,255,255,0.08); }
+.score-table th:first-child { text-align:left; color:rgba(220,210,190,0.3); }
+.score-table th.lv-th { color:rgba(255,255,255,0.94); background:rgba(255,255,255,0.03); }
+.score-table th.nn-th { color:rgba(255,255,255,0.94); }
+.score-table th.sa-th { color:rgba(255,255,255,0.94); }
+.score-table td { padding:13px 20px; text-align:center; font-family:'DM Mono',monospace; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.04); color:rgba(255,255,255,0.84); vertical-align:middle; }
+.score-table td:first-child { text-align:left; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(220,210,190,0.4); font-family:'DM Mono',monospace; }
+.score-table tr:hover td { background:rgba(255,255,255,0.01); }
+.score-table td.lv-td { background:rgba(255,255,255,0.015); color:rgba(255,255,255,0.9); }
+.score-table td.hi { font-weight:500; font-size:14px; color:rgba(255,255,255,0.96); }
+.score-table td.lv-hi { color:rgba(255,255,255,0.96); font-weight:500; font-size:14px; }
+.score-table td.nn-hi { color:rgba(255,255,255,0.96); font-weight:500; font-size:14px; }
+.score-table td.sa-hi { color:rgba(255,255,255,0.96); font-weight:500; font-size:14px; }
+.score-def { font-family:'Noto Serif KR',serif; font-size:10px; font-weight:300; color:rgba(220,210,190,0.3); display:block; margin-top:2px; letter-spacing:0; font-style:italic; }
+.score-total-row td { border-top:1px solid rgba(255,255,255,0.1); padding:18px 20px; font-weight:400; }
+.score-total-row td:first-child { font-size:9px; letter-spacing:4px; color:rgba(220,210,190,0.4); }
+.lv-total { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300; color:rgba(255,255,255,0.96); }
+.nn-total { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300; color:rgba(255,255,255,0.96); }
+.sa-total { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300; color:rgba(255,255,255,0.96); }
+.score-interp { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid rgba(255,255,255,0.06); margin-top:24px; overflow:hidden; }
+.si { padding:20px 26px; border-right:1px solid rgba(255,255,255,0.06); }
+.si:last-child { border-right:none; }
+.si-brand { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:4px; text-transform:uppercase; display:block; margin-bottom:7px; color:rgba(255,255,255,0.96); }
+.si-desc { font-size:12px; font-weight:300; color:rgba(255,255,255,0.74); line-height:1.8; }
+.si-desc strong { font-weight:500; color:rgba(255,255,255,0.96); }
+
+/* ══════════════════════ TIMELINE ══════════════════════ */
+.timeline-section { background:#0A0A08; }
+.tl-inner { max-width:1100px; margin:0 auto; padding:88px 60px; }
+.tl-track { display:flex; align-items:center; flex-wrap:wrap; gap:10px 14px; margin-top:48px; border:1px solid rgba(255,255,255,0.07); padding:24px 28px; background:rgba(255,255,255,0.012); }
+.tl-item { display:flex; align-items:center; gap:10px; position:relative; }
+.tl-item::after { content:'→'; margin-left:14px; color:rgba(228,223,214,0.34); font-family:'DM Mono',monospace; font-size:14px; }
+.tl-item:last-child::after { content:''; margin:0; }
+.tl-date { padding:0; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:rgba(228,223,214,0.48); display:flex; align-items:center; border-right:none; background:none; white-space:nowrap; }
+.tl-content { padding:0; display:flex; align-items:center; gap:8px; }
+.tl-label { font-size:13px; font-weight:300; color:rgba(228,223,214,0.82); letter-spacing:0.5px; white-space:nowrap; }
+.tl-item.active .tl-date { color:rgba(255,255,255,0.86); }
+.tl-item.active .tl-date-inner { display:flex; align-items:center; gap:6px; }
+.tl-item.active { border-left:none; }
+.tl-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:0; flex-shrink:0; background:rgba(255,255,255,0.25); }
+.tl-item.active .tl-dot { background:rgba(255,255,255,0.8); }
+
+/* ══════════════════════ PORTFOLIO BAR ══════════════════════ */
+.port-bar { background:#080808; padding:48px 60px; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); }
+.port-bar-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.port-lbl { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:4px; text-transform:uppercase; color:rgba(220,210,190,0.22); white-space:nowrap; }
+.port-flow { font-family:'Noto Serif KR',serif; font-size:13px; font-weight:300; color:rgba(220,210,190,0.52); line-height:2; }
+.port-note { font-family:'DM Mono',monospace; font-size:9px; color:rgba(220,210,190,0.24); letter-spacing:0.1em; margin-left:auto; }
+
+.sec-footer { text-align:center; padding:64px 60px 88px; }
+.sec-footer p { font-family:'Cormorant Garamond',serif; font-size:17px; font-style:italic; font-weight:300; color:rgba(220,210,190,0.2); letter-spacing:3px; }
+
+@media(max-width:860px) {
+  .nav { padding:0 20px; }
+  .nav-links li a span:not(.ndot) { display:none; }
+  .two-col,.brand-head,.mood-row,.strat-grid,.why-brand-grid,.comp-heads,.comp-row,.score-interp,.ps-grid { grid-template-columns:1fr; }
+  .pad { padding:56px 24px; }
+  .brand-inner { padding:56px 24px; }
+  .why-brand { padding:36px 24px; }
+  .comp-wrap,.score-inner,.tl-inner,.kr-inner,.ps-inner { padding-left:24px; padding-right:24px; }
+  .kr-grid { grid-template-columns:1fr; }
+  .score-table { font-size:10px; }
+  .tl-track { padding:20px 18px; gap:8px 10px; }
+  .tl-item::after { margin-left:10px; }
+  .tl-date { font-size:9px; letter-spacing:2px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <span class="nav-title">LFSQ PB — 향 브랜드 기획안</span>
+  <ul class="nav-links">
+    <li><a href="#cover"><span class="ndot" style="background:#555"></span><span>Overview</span></a></li>
+    <li><a href="#why"><span class="ndot" style="background:#888"></span><span>Why</span></a></li>
+    <li><a href="#strategy"><span class="ndot" style="background:#777"></span><span>Strategy</span></a></li>
+    <li><a href="#livinne"><span class="ndot" style="background:#9ab0c0"></span><span>LIVINNE</span></a></li>
+    <li><a href="#timeline"><span class="ndot" style="background:#aaa"></span><span>Timeline</span></a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     01 · COVER
+     ════════════════════════════════════════════ -->
+<section class="cover" id="cover">
+  <div class="cstripe cstripe-top" style="background:rgba(195,200,208,0.28);transform:scaleX(0);transform-origin:left;animation:lineExpand 1.4s ease forwards .3s"></div>
+  <div class="cstripe cstripe-bot" style="background:rgba(195,200,208,0.28);transform:scaleX(0);transform-origin:right;animation:lineExpand 1.4s ease forwards .5s"></div>
+  <div class="cover-yr">INTERNAL · 2025</div>
+
+  <!-- butterfly -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-275px)">
+    <svg class="bf" width="88" height="54" viewBox="0 0 90 56" fill="none">
+      <path class="wing-left"  d="M45 28 C26 10 4 12 6 28 C8 40 26 46 45 34 Z" fill="none" stroke="rgba(195,200,208,0.5)" stroke-width="1.2"/>
+      <path class="wing-left"  d="M45 34 C26 46 8 60 10 46 C12 36 26 40 45 34 Z" fill="none" stroke="rgba(195,200,208,0.35)" stroke-width="1"/>
+      <path class="wing-right" d="M45 28 C64 10 86 12 84 28 C82 40 64 46 45 34 Z" fill="none" stroke="rgba(195,200,208,0.5)" stroke-width="1.2"/>
+      <path class="wing-right" d="M45 34 C64 46 82 60 80 46 C78 36 64 40 45 34 Z" fill="none" stroke="rgba(195,200,208,0.35)" stroke-width="1"/>
+      <ellipse cx="45" cy="31" rx="2.5" ry="7" fill="rgba(195,200,208,0.65)"/>
+      <path d="M42.5 24 C38 14 33 9 31 6" stroke="rgba(195,200,208,0.4)" stroke-width=".9" fill="none" stroke-linecap="round"/>
+      <path d="M47.5 24 C52 14 57 9 59 6" stroke="rgba(195,200,208,0.4)" stroke-width=".9" fill="none" stroke-linecap="round"/>
+      <circle cx="31" cy="6" r="1.8" fill="rgba(195,200,208,0.5)"/>
+      <circle cx="59" cy="6" r="1.8" fill="rgba(195,200,208,0.5)"/>
+    </svg>
+  </div>
+
+  <div class="cover-badge">LFSQ PB — 브랜드 기획안 2025</div>
+  <div class="cover-title">LFSQ PB 브랜드 기획안</div>
+  <div class="cover-sub">
+    디퓨저 &amp; 룸스프레이 브랜드 제안<br>
+    매장 시그니처 향에서 출발한 확장형 향 브랜드 기획
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     02 · WHY
+     ════════════════════════════════════════════ -->
+<section id="why" class="why-section">
+  <div class="max-w pad reveal">
+    <div class="eyebrow">02 · Strategic Background</div>
+    <div class="sec-title">왜 지금 PB 브랜드인가</div>
+    <span class="sec-sub">독립 브랜드 전략의 필요성</span>
+
+    <div class="two-col">
+      <div class="icard reveal">
+        <span class="icard-label">출발점</span>
+        <div class="icard-title">매장 향 → 브랜드화</div>
+        <ul class="blist">
+          <li>LFSQ 매장 시그니처 향에 대한 <strong>구매 요청 지속 발생</strong></li>
+          <li>단순 제품 판매가 아닌 <strong>독립 PB 브랜드</strong>로 확장</li>
+          <li>장기 <strong>브랜드 자산화</strong>가 핵심 목표</li>
+        </ul>
+      </div>
+      <div class="icard reveal reveal-delay-1">
+        <span class="icard-label">포지셔닝 방향</span>
+        <div class="icard-title">독립 브랜드 방식 채택</div>
+        <ul class="blist">
+          <li class="ng"><strong>IP 브랜드 방식 ✗</strong> — "LFSQ가 만든 향"으로 인식 시 확장 한계</li>
+          <li class="ok"><strong>독립 브랜드 방식 ✓</strong> — "좋은 향이라 매장에서 쓰는 브랜드"</li>
+          <li>LFSQ는 <strong>신뢰 레퍼런스</strong>로만 활용</li>
+          <li>장기적으로 <strong>독자 IP · 브랜드 자산</strong>으로 성장</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="g-div"></div>
+
+<!-- ════════════════════════════════════════════
+     03 · COMMON STRATEGY
+     ════════════════════════════════════════════ -->
+<section id="strategy" class="strategy-section">
+  <div class="max-w pad reveal">
+    <div class="eyebrow">03 · Common Strategy</div>
+    <div class="sec-title">Brand Strategy</div>
+    <span class="sec-sub">네이밍 · 가격 포지셔닝</span>
+
+    <div class="strat-grid">
+
+      <!-- Naming Strategy -->
+      <div class="strat-card reveal">
+        <span class="strat-card-label">Scent Naming Strategy</span>
+        <div class="strat-card-title">시간 + 장소 기반 네이밍</div>
+        <ul class="blist">
+          <li>향을 통해 <strong>'공간'과 '기억'</strong>을 연결</li>
+          <li>글로벌 공감 가능한 <strong>일상 장면</strong> 언어 사용</li>
+          <li>브랜드마다 <strong>고유 네이밍 톤</strong> 유지</li>
+        </ul>
+        <div class="naming-examples">
+          <div class="naming-ex">오후 두 시의 귤밭</div>
+          <div class="naming-ex">금요일 밤의 침대</div>
+          <div class="naming-ex">수요일 오후의 카페</div>
+          <div class="naming-ex">비 오는 날의 사찰</div>
+          <div class="naming-ex">엄마 집 거실</div>
+        </div>
+      </div>
+
+      <!-- Market Positioning -->
+      <div class="strat-card reveal reveal-delay-1">
+        <span class="strat-card-label">Market Positioning — 가격 전략</span>
+        <div class="strat-card-title">시장 포지셔닝</div>
+        <div class="price-tiers">
+          <div class="price-row">
+            <span class="price-tier-label" style="color:rgba(220,210,190,0.45)">PREMIUM</span>
+            <span class="price-tier-brands">조말론</span>
+            <span class="price-tier-range">~₩160,000</span>
+          </div>
+          <div class="price-row">
+            <span class="price-tier-label" style="color:rgba(220,210,190,0.45)">MID</span>
+            <span class="price-tier-brands">P Collection · 센트오브파라다이스 · 더센트오브페이지<br>호텔도슨 · 비비앙 · 킨포크노츠(일부)</span>
+            <span class="price-tier-range">₩40,000<br>~₩60,000</span>
+          </div>
+          <div class="price-row">
+            <span class="price-tier-label" style="color:rgba(220,210,190,0.45)">LOW</span>
+            <span class="price-tier-brands">코코도르 · 헤트라스 · 라운드어라운드</span>
+            <span class="price-tier-range">₩10,000<br>~₩20,000</span>
+          </div>
+        </div>
+        <div class="price-gap-note">
+          <p>현재 시장: <strong>"감성 + 디자인 + 적정 가격"</strong>의 미들 포지션 공백 존재</p>
+          <p style="margin-top:6px">목표 가격대: <strong>₩28,000 ~ ₩34,000</strong></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="g-div"></div>
+
+<!-- ════════════════════════════════════════════
+     04 · LIVINNE
+     ════════════════════════════════════════════ -->
+<div class="brand-section-wrap" id="livinne">
+  <div class="brand-label lv-label-bar"><span>●</span> 안 01 · LIVINNE <span>●</span></div>
+
+  <!-- LIVINNE COVER — Cool Gray, silver, no navy -->
+  <div class="brand-cover lv-cover">
+    <div class="cstripe cstripe-top lv-stripe"></div>
+    <div class="cstripe cstripe-bot lv-stripe"></div>
+    <div class="cover-yr" style="animation:none;opacity:1;color:rgba(195,200,208,0.38)">안 01 · PREMIUM LIFESTYLE</div>
+
+    <!-- Silver butterfly -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-248px);opacity:0.68">
+      <svg class="bf" width="108" height="68" viewBox="0 0 110 70" fill="none">
+        <path class="wing-left"  d="M55 34 C34 14 6 16 8 34 C10 48 34 56 55 42 Z" fill="rgba(200,205,210,0.07)" stroke="rgba(195,200,210,0.62)" stroke-width="1.2"/>
+        <path class="wing-left"  d="M55 42 C34 56 10 72 12 56 C14 44 34 48 55 42 Z" fill="rgba(200,205,210,0.04)" stroke="rgba(195,200,210,0.42)" stroke-width="1"/>
+        <path class="wing-right" d="M55 34 C76 14 104 16 102 34 C100 48 76 56 55 42 Z" fill="rgba(200,205,210,0.07)" stroke="rgba(195,200,210,0.62)" stroke-width="1.2"/>
+        <path class="wing-right" d="M55 42 C76 56 100 72 98 56 C96 44 76 48 55 42 Z" fill="rgba(200,205,210,0.04)" stroke="rgba(195,200,210,0.42)" stroke-width="1"/>
+        <ellipse cx="55" cy="38" rx="3" ry="9" fill="rgba(190,196,204,0.78)"/>
+        <path d="M52 29 C47 17 42 11 40 7" stroke="rgba(195,200,210,0.42)" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M58 29 C63 17 68 11 70 7" stroke="rgba(195,200,210,0.42)" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="40" cy="7" r="2" fill="rgba(195,200,210,0.5)"/>
+        <circle cx="70" cy="7" r="2" fill="rgba(195,200,210,0.5)"/>
+      </svg>
+    </div>
+    <!-- silver accent detail -->
+    <div style="position:absolute;bottom:136px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;opacity:0.28">
+      <div style="width:72px;height:1px;background:linear-gradient(to right,transparent,rgba(195,200,208,0.9))"></div>
+      <div style="width:4px;height:4px;border-radius:50%;background:rgba(195,200,208,0.9)"></div>
+      <div style="width:72px;height:1px;background:linear-gradient(to left,transparent,rgba(195,200,208,0.9))"></div>
+    </div>
+
+    <div class="cover-badge-brand lv-acc">Premium Gift · Brand Asset</div>
+    <div class="lv-cover-ttl">LIVINNE</div>
+    <div class="cover-sub-brand lv-csub">공간에 스며드는 프리미엄 라이프스타일 향</div>
+  </div>
+
+  <!-- LIVINNE CONTENT -->
+  <div class="brand-lv">
+    <div class="hbg" style="color:#9ab0c0">LIVINNE</div>
+    <div class="brand-inner">
+      <div class="brand-head">
+        <div class="reveal">
+          <span class="brand-xl lv-xl">LIVINNE</span>
+          <span class="brand-ess lv-ess">Premium · Global · Brand Asset</span>
+          <div class="hashtags">
+            <span class="htag lv-htag">#프리미엄</span>
+            <span class="htag lv-htag">#라이프스타일</span>
+            <span class="htag lv-htag">#글로벌</span>
+          </div>
+          <ul class="brand-blist lv-blist">
+            <li><strong>글로벌 라이프스타일</strong> 포지션 — 공간 중심 프리미엄</li>
+            <li><strong>카카오선물하기</strong> 1순위 입점 채널</li>
+            <li>시즌 기프트 에디션으로 <strong>반복 구매</strong> 유도</li>
+            <li>장기 <strong>브랜드 IP 자산화</strong> 가능성 최대</li>
+            <li><strong>29CM · 올리브영 · 자사몰</strong> 확장 로드맵</li>
+          </ul>
+          <!-- Cool Gray palette — no navy -->
+          <div class="palette" style="margin-top:24px">
+            <div class="sw"><div class="sw-c" style="background:#C4BEB8"></div><div class="sw-l">Warm Gray</div></div>
+            <div class="sw"><div class="sw-c" style="background:#E8E4DE"></div><div class="sw-l">Soft Ecru</div></div>
+            <div class="sw"><div class="sw-c" style="background:#A8A8AC;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.1)"></div><div class="sw-l">Silver</div></div>
+            <div class="sw"><div class="sw-c" style="background:#7C8088"></div><div class="sw-l">Cool Gray</div></div>
+          </div>
+        </div>
+        <div class="id-cards reveal reveal-delay-1">
+          <div class="id-card lv-idc">
+            <span class="id-lbl lv-idlbl">Target</span>
+            <div class="id-val lv-idval">25–42세 · 도시 / 공간 투자형 + 선물 수요층</div>
+          </div>
+          <div class="id-card lv-idc">
+            <span class="id-lbl lv-idlbl">Design Mood</span>
+            <div class="id-val lv-idval">Quiet Luxury — 뮤트 뉴트럴 · 실버 액센트 · 소프트 섀도우</div>
+          </div>
+          <div class="id-card lv-idc">
+            <span class="id-lbl lv-idlbl">Package</span>
+            <div class="id-val lv-idval">유리병 · 실버 메탈 캡 · 기프트 박스 구성</div>
+          </div>
+          <div class="id-card lv-idc">
+            <span class="id-lbl lv-idlbl">Launch Channel</span>
+            <div class="id-val lv-idval">카카오선물하기 → 29CM · 올리브영 · 자사몰</div>
+          </div>
+        </div>
+      </div>
+      <div class="mood-row reveal reveal-delay-2">
+        <div>
+          <div class="mood-ttl lv-mttl">Design Mood — Quiet Luxury</div>
+          <div class="mood-body">자연광 · 나뭇잎 그림자 · 미니멀 공간<br>뮤트 뉴트럴 · 실버 메탈 포인트 · 소프트 섀도우</div>
+          <div class="tags">
+            <span class="tag lv-tag">Muted Neutral</span>
+            <span class="tag lv-tag">Silver Accent</span>
+            <span class="tag lv-tag">Minimal Space</span>
+            <span class="tag lv-tag">Soft Shadow</span>
+            <span class="tag lv-tag">Gift Ready</span>
+          </div>
+        </div>
+        <div>
+          <!-- SVG palette visual -->
+          <div style="padding:24px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.015)">
+            <svg width="100%" viewBox="0 0 400 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- gray swatches large -->
+              <rect x="10" y="20" width="80" height="80" rx="2" fill="#C4BEB8"/>
+              <rect x="102" y="20" width="80" height="80" rx="2" fill="#E8E4DE"/>
+              <rect x="194" y="20" width="80" height="80" rx="2" fill="#A8A8AC"/>
+              <rect x="286" y="20" width="80" height="80" rx="2" fill="#7C8088"/>
+              <!-- silver highlight line -->
+              <line x1="10" y1="110" x2="366" y2="110" stroke="rgba(195,200,208,0.4)" stroke-width="1"/>
+              <text x="50" y="128" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(195,200,208,0.5)" letter-spacing="0.08em">WARM GRAY</text>
+              <text x="142" y="128" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(195,200,208,0.5)" letter-spacing="0.08em">SOFT ECRU</text>
+              <text x="234" y="128" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(195,200,208,0.5)" letter-spacing="0.08em">SILVER</text>
+              <text x="326" y="128" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(195,200,208,0.5)" letter-spacing="0.08em">COOL GRAY</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY CHOOSE LIVINNE -->
+  <div class="why-brand lv-why">
+    <div class="why-brand-ttl lv-wttl">Why Choose LIVINNE</div>
+    <div class="why-brand-grid reveal">
+      <div class="wi">
+        <span class="wi-lbl">Brand Scalability</span>
+        <div class="wi-val">글로벌 감성 — <strong>장기 IP화</strong> 가능성 최대</div>
+      </div>
+      <div class="wi">
+        <span class="wi-lbl">Revenue Channel</span>
+        <div class="wi-val"><strong>카카오선물하기</strong> 즉시 입점 — 상시 선물 수요 확보</div>
+      </div>
+      <div class="wi">
+        <span class="wi-lbl">Risk Profile</span>
+        <div class="wi-val">프리미엄 중간가 — <strong>가격 저항 낮고 타겟 폭 넓음</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="g-div"></div>
+
+<!-- ════════════════════════════════════════════
+     10 · TIMELINE
+     ════════════════════════════════════════════ -->
+<section class="timeline-section" id="timeline">
+  <div class="tl-inner">
+    <div class="eyebrow reveal">10 · Project Timeline</div>
+    <div class="sec-title reveal">Project Timeline</div>
+    <span class="sec-sub reveal">출시 목표: 2025년 6월</span>
+
+    <div class="tl-track reveal reveal-delay-1">
+      <div class="tl-item active">
+        <div class="tl-date">4/6</div>
+        <div class="tl-content">
+          <span class="tl-dot"></span>
+          <span class="tl-label" style="color:rgba(228,223,214,0.9);font-weight:400">네이밍 확정</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">4월 2주차</div>
+        <div class="tl-content">
+          <span class="tl-dot"></span>
+          <span class="tl-label">디자인 방향</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">4월 3주차</div>
+        <div class="tl-content">
+          <span class="tl-dot"></span>
+          <span class="tl-label">디자인 확정</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">4월 4주차</div>
+        <div class="tl-content">
+          <span class="tl-dot"></span>
+          <span class="tl-label">발주</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">5월</div>
+        <div class="tl-content">
+          <span class="tl-dot"></span>
+          <span class="tl-label">생산</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">6월</div>
+        <div class="tl-content">
+          <span class="tl-dot"></span>
+          <span class="tl-label" style="color:rgba(228,223,214,0.88)">출시</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="sec-footer">
+  <p>Fragrance is memory. Brand is ownership.</p>
+</div>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.07 });
+els.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
