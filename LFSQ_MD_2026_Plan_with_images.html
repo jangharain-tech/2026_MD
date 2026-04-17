@@ -3,1114 +3,841 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LFSQ MD 2026 Plan</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>FY2026 LFSQ MD PLAN</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --border: #2a2a2a;
-    --accent: #c8f064;
-    --accent2: #64c8f0;
-    --text: #f0f0f0;
-    --muted: #888;
-    --muted2: #555;
+    --bg: #0d0d0d;
+    --bg2: #161616;
+    --bg3: #1e1e1e;
+    --lime: #c6f135;
+    --lime-dim: rgba(198,241,53,0.15);
     --white: #ffffff;
+    --off-white: #e8e8e8;
+    --gray-light: rgba(255,255,255,0.08);
+    --gray-mid: rgba(255,255,255,0.45);
+    --gray-text: rgba(255,255,255,0.65);
+    --red: #e02020;
+    --purple: #9c4dcc;
+    --slide-w: 1440px;
+    --slide-h: 810px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    background: #060606;
+    font-family: 'Noto Sans KR', sans-serif;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
   }
 
-  /* NAV */
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 32px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    z-index: 100;
-    flex-shrink: 0;
-  }
-  .nav-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
-  .nav-controls {
+  /* ─── Controls ─── */
+  #controls {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 16px;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 40px;
+    padding: 10px 24px;
+    z-index: 999;
   }
-  .slide-counter {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
-  .nav-btn {
-    display: none;
-  }
-
-  /* SIDE ARROW BUTTONS */
-  .side-arrow {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 150;
-    background: rgba(20,20,20,0.75);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 52px; height: 100px;
+  .ctrl-btn {
+    background: none;
+    border: none;
+    color: #fff;
     cursor: pointer;
     font-size: 22px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    transition: all .2s;
-    backdrop-filter: blur(8px);
+    transition: background 0.2s;
   }
-  .side-arrow.left { left: 0; border-radius: 0 10px 10px 0; border-left: none; }
-  .side-arrow.right { right: 0; border-radius: 10px 0 0 10px; border-right: none; }
-  .side-arrow:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-  .side-arrow:disabled { opacity: .15; cursor: default; pointer-events: none; }
-
-  /* DOT NAV */
+  .ctrl-btn:hover { background: rgba(255,255,255,0.15); }
+  #slide-counter {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    min-width: 60px;
+    text-align: center;
+  }
   .dot-nav {
-    display: flex;
-    gap: 6px;
-    align-items: center;
+    display: flex; gap: 6px; align-items: center;
   }
   .dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--muted2);
+    background: rgba(255,255,255,0.3);
     cursor: pointer;
-    transition: all .2s;
+    transition: all 0.2s;
   }
-  .dot.active { background: var(--accent); width: 20px; border-radius: 3px; }
+  .dot.active { background: #fff; width: 18px; border-radius: 3px; }
 
-  /* SLIDES CONTAINER */
-  .slides-wrap {
-    flex: 1;
+  /* ─── Slide Container ─── */
+  #stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-    position: relative;
   }
+
   .slide {
     position: absolute;
-    inset: 0;
-    padding: 48px 64px;
-    opacity: 0;
-    transform: translateX(40px);
-    transition: all .4s cubic-bezier(.4,0,.2,1);
-    pointer-events: none;
-    overflow-y: auto;
-    display: flex;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    background: #fff;
+    display: none;
     flex-direction: column;
-  }
-  .slide.active {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: all;
-  }
-  .slide.exit {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-
-  /* SLIDE LABELS */
-  .slide-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-  .slide-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px;
-    letter-spacing: 2px;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .slide-subtitle {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 40px;
-    line-height: 1.6;
-  }
-
-  /* ---- SLIDE 0: COVER ---- */
-  #slide-0 {
-    justify-content: center;
-    align-items: flex-start;
-  }
-  .cover-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--accent);
-    margin-bottom: 32px;
-  }
-  .cover-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 10vw, 120px);
-    line-height: .95;
-    letter-spacing: 2px;
-    margin-bottom: 24px;
-  }
-  .cover-title span { color: var(--accent); }
-  .cover-line {
-    width: 60px;
-    height: 2px;
-    background: var(--accent);
-    margin-bottom: 24px;
-  }
-  .cover-desc {
-    font-size: 15px;
-    color: #d8d8d8;
-    max-width: 480px;
-    line-height: 1.7;
-    margin-bottom: 48px;
-  }
-  .cover-meta {
-    display: flex;
-    gap: 40px;
-  }
-  .cover-meta-item label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--muted2);
-    display: block;
-    margin-bottom: 4px;
-  }
-  .cover-meta-item span {
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  /* ---- SLIDE 1: FY2025 REVIEW ---- */
-  .review-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    flex: 1;
-  }
-  .review-left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .review-right {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .stat-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 14px;
-    position: relative;
     overflow: hidden;
+    transform-origin: center center;
   }
-  .stat-card::before {
-    content: '';
+  .slide.active { display: flex; }
+
+  /* Responsive scale */
+  #slide-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─── Common Elements ─── */
+  .topbar {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
-    opacity: .4;
+    height: 40px;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    z-index: 10;
   }
-  .stat-label {
-    font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    line-height: 1.3;
+  .topbar-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #fff;
+    font-weight: 500;
   }
-  .stat-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--accent);
-    letter-spacing: 1px;
+
+  /* ─── SLIDE 1: Cover ─── */
+  .s1-body { padding: 80px 80px 60px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+  .s1-team { font-size: 13px; letter-spacing: 0.15em; color: var(--gray-mid); font-family: 'DM Sans', sans-serif; margin-bottom: 16px; }
+  .s1-title { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.92; color: var(--black); letter-spacing: -1px; }
+  .s1-rule { width: 100px; height: 3px; background: var(--black); margin: 28px 0; }
+  .s1-sub { font-size: 18px; color: #444; font-weight: 300; }
+  .s1-meta { display: flex; gap: 80px; }
+  .s1-meta-item label { font-size: 10px; letter-spacing: 0.2em; color: var(--gray-mid); font-family: 'DM Sans', sans-serif; display: block; margin-bottom: 4px; }
+  .s1-meta-item span { font-size: 16px; font-weight: 700; color: var(--black); }
+
+  /* ─── SLIDE 2 & 3: Review / Lesson ─── */
+  .s-body { padding: 68px 72px 48px; height: 100%; display: flex; flex-direction: column; }
+  .s-headline { font-family: 'Bebas Neue', sans-serif; font-size: 68px; color: var(--black); letter-spacing: 1px; margin-bottom: 8px; }
+  .s-headline .green { color: var(--green); }
+  .s-subtitle { font-size: 13.5px; color: #444; line-height: 1.8; margin-bottom: 32px; font-weight: 300; }
+  .s-subtitle b { font-weight: 600; }
+
+  /* Timeline strip */
+  .timeline-strip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    margin-bottom: 36px;
   }
-  .timeline-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
+  .tl-label { font-size: 13px; color: #777; line-height: 1.4; margin-right: 24px; font-weight: 300; }
+  .tl-label strong { display: block; font-size: 15px; color: var(--black); font-weight: 700; }
+  .tl-line { flex: 1; height: 2px; background: var(--blue); position: relative; }
+  .tl-circle {
+    width: 90px; height: 90px; border-radius: 50%;
+    border: 2px solid var(--blue);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: #fff;
+    font-weight: 700; font-size: 13px; text-align: center; line-height: 1.3;
+    color: var(--black);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .tl-circle small { font-size: 10px; font-weight: 400; color: #666; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+
+  /* Image cards row */
+  .cards-row { display: flex; gap: 20px; flex: 1; }
+  .img-card {
     flex: 1;
-  }
-  .timeline-title {
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    font-family: 'DM Mono', monospace;
-  }
-  .timeline-items {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-  .tl-item {
-    display: flex; align-items: flex-start; gap: 12px;
+  .img-box {
+    flex: 1;
+    background: var(--red);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    min-height: 160px;
   }
-  .tl-date {
-    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); min-width: 40px; padding-top: 2px;
+  .img-box img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: none;
   }
-  .tl-dot {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--muted2); margin-top: 5px; flex-shrink: 0;
+  .img-box.has-img img { display: block; }
+  .img-box.has-img .img-placeholder { display: none; }
+  .img-placeholder {
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    padding: 12px;
   }
-  .tl-content {
-    font-size: 12px; color: var(--text); line-height: 1.4;
+  .img-upload-btn {
+    position: absolute;
+    bottom: 8px; right: 8px;
+    background: rgba(0,0,0,0.55);
+    border: none; border-radius: 4px;
+    color: #fff; font-size: 11px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    opacity: 0;
+    transition: opacity 0.2s;
   }
-  .tl-sub {
-    font-size: 10px; color: var(--muted); margin-top: 2px;
-  }
-  .partner-section {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px;
-  }
-  .partner-tags {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
-  }
-  .tag {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--muted);
-  }
-  .tag.accent { border-color: var(--accent); color: var(--accent); background: rgba(200,240,100,.06); }
-  .tag.blue { border-color: var(--accent2); color: var(--accent2); background: rgba(100,200,240,.06); }
+  .img-box:hover .img-upload-btn { opacity: 1; }
+  .card-stat { font-size: 26px; font-weight: 900; color: var(--black); }
+  .card-name { font-size: 11px; font-weight: 700; color: var(--black); letter-spacing: 0.05em; }
+  .card-sub { font-size: 11px; color: #666; }
 
-  /* ---- SLIDE 2: LESSONS ---- */
-  .lesson-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
+  /* ─── SLIDE 3: Lesson boxes ─── */
+  .lesson-boxes { display: flex; gap: 24px; flex: 1; }
+  .lesson-box {
+    flex: 1;
+    border: 2px solid var(--blue);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 28px;
+    text-align: center;
   }
-  .lesson-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; position: relative;
-  }
-  .lesson-card.warn { border-color: rgba(240,100,100,.3); }
-  .lesson-card.warn::before {
-    content: '⚠'; position: absolute; top: 20px; right: 20px; font-size: 16px; opacity: .5; color: #f06464;
-  }
-  .lesson-num {
-    font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--muted2); line-height: 1; margin-bottom: 8px;
-  }
-  .lesson-head {
-    font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);
-  }
-  .lesson-body {
-    font-size: 12px; color: var(--muted); line-height: 1.6;
-  }
-  .lesson-body li { list-style: none; padding-left: 12px; position: relative; margin-bottom: 4px; }
-  .lesson-body li::before { content: '–'; position: absolute; left: 0; color: var(--muted2); }
-  .result-bar {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px;
-  }
-  .result-label {
-    font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 16px;
-  }
-  .result-stats {
-    display: flex; gap: 32px;
-  }
-  .result-stat { text-align: center; }
-  .result-val {
-    font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); letter-spacing: 1px; display: block;
-  }
-  .result-desc { font-size: 11px; color: var(--muted); }
+  .lesson-box h3 { font-size: 24px; font-weight: 900; color: var(--black); margin-bottom: 12px; }
+  .lesson-box p { font-size: 13.5px; color: #555; line-height: 1.7; }
 
-  /* ---- SLIDE 3: MISSION ---- */
-  .mission-layout {
-    display: grid; grid-template-columns: 1fr 380px; gap: 32px; flex: 1;
+  /* ─── SLIDE 4: Plan overview ─── */
+  .plan-boxes { display: flex; gap: 24px; flex: 1; }
+  .plan-box {
+    flex: 1;
+    border: 2px solid var(--blue);
+    border-radius: 4px;
+    padding: 28px 24px;
   }
-  .mission-left {
-    display: flex; flex-direction: column; gap: 16px;
+  .plan-box.purple-bg {
+    background: #9c4dcc;
+    border-color: #9c4dcc;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
   }
-  .mission-statement {
-    background: linear-gradient(135deg, rgba(200,240,100,.05), rgba(200,240,100,.01)); border: 1px solid rgba(200,240,100,.2); border-radius: 12px; padding: 24px; font-size: 14px; color: var(--text); line-height: 1.8;
+  .plan-box.purple-bg:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(156,77,204,0.35); }
+  .plan-box.purple-bg h3 { color: rgba(255,255,255,0.9); }
+  .plan-box.purple-bg p { color: rgba(255,255,255,0.85); }
+  .plan-box h3 { font-size: 20px; font-weight: 900; margin-bottom: 12px; color: var(--black); }
+  .plan-box p { font-size: 13px; line-height: 1.8; color: #555; }
+  .plan-box p b { font-weight: 700; color: var(--black); }
+  .plan-box.purple-bg p b { color: rgba(255,255,255,0.95); }
+  .green-text { color: var(--green) !important; }
+  .url-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
   }
-  .mission-statement strong { color: var(--accent); }
-  .mission-pillars {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1;
+  .plan-box.purple-bg:hover .url-overlay-hint { opacity: 1; }
+  .url-overlay-hint {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    font-family: 'DM Sans', sans-serif;
   }
-  .pillar-btn {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; cursor: pointer; transition: all .25s; text-align: left; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden;
+  .url-input-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
-  .pillar-btn::after {
-    content: '→ 자세히'; font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: 1px; color: var(--muted2); margin-top: auto; transition: color .2s;
+  .url-input-wrap input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    outline: none;
   }
-  .pillar-btn.green { border-color: rgba(100,240,180,.25); }
-  .pillar-btn.green:hover { background: rgba(100,240,180,.06); border-color: rgba(100,240,180,.5); }
-  .pillar-btn.green:hover::after { color: #64f0b4; }
-  .pillar-btn.yellow { border-color: rgba(200,240,100,.25); }
-  .pillar-btn.yellow:hover { background: rgba(200,240,100,.06); border-color: rgba(200,240,100,.5); }
-  .pillar-btn.yellow:hover::after { color: var(--accent); }
-  .pillar-icon {
-    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 4px;
+  .url-input-wrap input::placeholder { color: rgba(255,255,255,0.5); }
+  .url-btn-row { display: flex; gap: 8px; }
+  .url-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
   }
-  .green .pillar-icon { background: rgba(100,240,180,.1); }
-  .yellow .pillar-icon { background: rgba(200,240,100,.1); }
-  .pillar-name {
-    font-size: 13px; font-weight: 600; color: var(--text);
-  }
-  .pillar-desc {
-    font-size: 11px; color: var(--muted); line-height: 1.5;
-  }
-  .mission-right {
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .target-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: center;
-  }
-  .target-label {
-    font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 12px;
-  }
-  .target-val {
-    font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--accent); letter-spacing: 2px; line-height: 1;
-  }
-  .target-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .url-btn.go { background: #fff; color: var(--purple); }
+  .url-btn.cancel { background: rgba(255,255,255,0.15); color: #fff; }
 
-  /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s;
+  /* ─── SLIDE 5: Detailed Plan ─── */
+  .s5-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; flex: 1; }
+  .s5-col { display: flex; flex-direction: column; gap: 12px; }
+  .s5-step-label { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; color: var(--gray-mid); }
+  .s5-step-title { font-size: 20px; font-weight: 900; color: var(--black); margin-bottom: 8px; }
+  .s5-step-title b { font-weight: 900; }
+  .s5-desc { font-size: 13px; color: #555; line-height: 1.7; }
+  .s5-desc b { font-weight: 700; color: var(--black); }
+
+  /* Timeline row for slide 5 */
+  .s5-timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 16px;
+    position: relative;
   }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; max-width: 680px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 40px; transform: translateY(20px); transition: transform .25s;
+  .s5-tl-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .s5-tl-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--black); background: var(--black); }
+  .s5-tl-dot.open { background: #fff; }
+  .s5-tl-circle {
+    width: 72px; height: 72px; border-radius: 50%;
+    border: 2px solid var(--gray-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--gray-mid);
+    background: #fff;
   }
-  .modal-overlay.open .modal { transform: translateY(0); }
-  .modal-close {
-    position: absolute; top: 16px; right: 16px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+  .s5-tl-circle.filled {
+    border-color: var(--black);
+    background: #fff;
+    overflow: hidden;
   }
-  .modal-close:hover { background: var(--accent); color: var(--bg); }
-  .modal-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; }
-  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; margin-bottom: 24px; }
-  .modal-section { margin-bottom: 24px; }
-  .modal-section-title {
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;
+  .s5-tl-circle.filled img { width: 100%; height: 100%; object-fit: cover; }
+  .s5-tl-line { flex: 1; height: 2px; background: var(--black); margin-top: 30px; }
+  .s5-tl-date { font-size: 11px; font-weight: 700; color: var(--black); font-family: 'DM Sans', sans-serif; }
+  .s5-tl-tag { font-size: 10px; color: var(--gray-mid); }
+
+  .s5-img-box {
+    flex: 1;
+    background: var(--red);
+    border-radius: 4px;
+    min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; cursor: pointer;
   }
-  .modal-items {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .modal-item {
-    display: flex; gap: 10px; font-size: 13px; line-height: 1.5; color: var(--muted);
-  }
-  .modal-item::before { content: '—'; color: var(--muted2); flex-shrink: 0; }
-  .modal-highlight { color: var(--text); font-weight: 500; }
-  .step-cards {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;
-  }
-  .step-card {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px;
-  }
-  .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--muted2); line-height: 1; margin-bottom: 6px; }
-  .step-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
-  .step-body { font-size: 11px; color: var(--muted); line-height: 1.5; }
-  .target-badge {
-    display: inline-block; background: rgba(200,240,100,.1); border: 1px solid rgba(200,240,100,.3); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-family: 'DM Mono', monospace; margin-bottom: 16px;
+  .s5-img-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .s5-img-box.has-img img { display: block; }
+  .s5-img-box.has-img .img-placeholder { display: none; }
+  .s5-bullet { font-size: 13px; color: #555; line-height: 1.8; }
+  .s5-bullet li { list-style: none; padding-left: 16px; position: relative; }
+  .s5-bullet li::before { content: "–"; position: absolute; left: 0; color: var(--gray-mid); }
+
+  /* ─── SLIDE 6 & 7: TBU ─── */
+  .tbu-box {
+    width: 520px; height: 300px;
+    background: var(--black);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.1em;
+    font-style: italic;
+    margin-top: 24px;
   }
 
-  /* ---- SLIDE 4: IP STRATEGY ---- */
-  .strategy-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1;
+  /* ─── SLIDE 8: Closing ─── */
+  .s8-body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px;
   }
-  .strategy-col {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px;
+  .s8-title { font-family: 'Bebas Neue', sans-serif; font-size: 110px; line-height: 0.92; color: var(--black); }
+  .s8-rule { width: 80px; height: 2px; background: var(--black); margin: 28px auto; }
+  .s8-msg { font-size: 16px; color: #555; line-height: 1.8; font-weight: 300; }
+  .s8-msg b { font-weight: 700; color: var(--black); }
+
+  /* Section label */
+  .section-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    border-bottom: 1.5px solid var(--blue-dark);
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .strategy-step {
-    font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--muted2);
-  }
-  .strategy-head {
-    font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--text);
-  }
-  .strategy-body {
-    font-size: 12px; color: var(--muted); line-height: 1.7; list-style: none;
-  }
-  .strategy-body li { padding-left: 14px; position: relative; margin-bottom: 6px; }
-  .strategy-body li::before { content: '·'; position: absolute; left: 0; color: var(--accent); font-size: 16px; top: -2px; }
-  .highlight-row {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 12px; color: var(--text); margin-top: auto;
-  }
-  .highlight-row span { color: var(--accent); font-weight: 600; }
-  .agency-tags {
-    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+  .section-label .num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--blue-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
   }
 
-  /* ---- SLIDE 5: PRIVATE BRAND ---- */
-  .brand-layout {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1;
-  }
-  .brand-left { display: flex; flex-direction: column; gap: 16px; }
-  .brand-right { display: flex; flex-direction: column; gap: 16px; }
-  .brand-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px;
-  }
-  .brand-card-title {
-    font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 14px;
-  }
-  .brand-pills {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;
-  }
-  .pill {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 11px; color: var(--text);
-  }
-  .pill.accent { background: rgba(200,240,100,.08); border-color: rgba(200,240,100,.3); color: var(--accent); }
-  .channel-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;
-  }
-  .channel-item {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12px;
-  }
-  .channel-item .ch-type { font-size: 9px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 4px; }
-  .channel-item .ch-names { color: var(--text); font-size: 11px; }
-  .challenge-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-  .challenge-item { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--muted); line-height: 1.4; }
-  .challenge-icon { font-size: 14px; flex-shrink: 0; }
+  /* hidden file input */
+  .file-input { display: none; }
 
-  /* REFERENCES PAGE */
-  .ref-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; flex: 1;
+  /* Keyboard hint */
+  #key-hint {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    font-family: 'DM Sans', sans-serif;
   }
-  .ref-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;
-  }
-  .ref-brand { font-size: 14px; font-weight: 700; }
-  .ref-product { font-size: 11px; color: var(--accent); letter-spacing: 1px; font-family: 'DM Mono', monospace; }
-  .ref-desc { font-size: 11px; color: var(--muted); line-height: 1.6; flex: 1; }
-  .ref-type { font-size: 10px; color: var(--muted2); margin-top: auto; font-family: 'DM Mono', monospace; letter-spacing: 1px; }
 
-  /* IMAGE ADDITIONS */
-  .ip-photo-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px;
+  /* Transition */
+  .slide { animation: none; }
+  .slide.entering { animation: slideIn 0.35s ease forwards; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .ip-photo-wrap {
-    border-radius: 10px; overflow: hidden; aspect-ratio: 1; position: relative; border: 1px solid var(--border);
-  }
-  .ip-photo-wrap img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-  .ip-photo-label {
-    position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.75)); padding: 16px 8px 6px; font-size: 9px; color: #fff; font-weight: 600; letter-spacing: 0.5px;
-  }
-  .cover-hero {
-    position: absolute; inset: 0; z-index: 0;
-  }
-  .cover-hero img {
-    width: 100%; height: 100%; object-fit: cover; opacity: 0.25; object-position: center top;
-  }
-  .cover-content { position: relative; z-index: 1; display:flex; flex-direction:column; flex:1; }
-  .nugas-char {
-    width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 2px solid var(--border); flex-shrink: 0;
-  }
-  .nugas-char img { width: 100%; height: 100%; object-fit: cover; }
-  .new-brand-img {
-    border-radius: 10px; overflow: hidden; height: 190px; border: 1px solid var(--border);
-  }
-  .new-brand-img img {
-    width: 100%; height: 100%; object-fit: cover;
-  }
-  .product-img-small {
-    border-radius: 8px; overflow: hidden; width: 76px; height: 76px; border: 1px solid var(--border); flex-shrink: 0;
-  }
-  .product-img-small img { width: 100%; height: 100%; object-fit: cover; }
-  .ref-img-hero {
-    border-radius: 8px; overflow: hidden; height: 110px; border: 1px solid var(--border); margin-bottom: 8px;
-  }
-  .ref-img-hero img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-  .ref-img-products {
-    border-radius: 8px; overflow: hidden; height: 72px; border: 1px solid var(--border); margin-bottom: 4px;
-  }
-  .ref-img-products img { width: 100%; height: 100%; object-fit: cover; }
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-brand">LFSQ MD PLAN</div>
-  <div class="nav-controls">
-    <div class="dot-nav" id="dotNav"></div>
-    <span class="slide-counter" id="slideCounter">01 / 07</span>
-    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">←</button>
-    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">→</button>
-  </div>
-</nav>
+<div id="key-hint">← → 또는 클릭으로 이동</div>
 
-<button class="side-arrow left" id="prevBtnSide" onclick="navigate(-1)">&#8592;</button>
-<button class="side-arrow right" id="nextBtnSide" onclick="navigate(1)">&#8594;</button>
+<div id="stage">
+<div id="slide-wrapper">
 
-<div class="slides-wrap">
-
-  <div class="slide active" id="slide-0" style="position:relative;overflow:hidden;">
-    <div class="cover-hero"><img id="coverHeroImg" alt=""></div>
-    <div class="cover-content">
-    <div class="cover-eyebrow">LINEFRIENDS SQUARE · MD TEAM</div>
-    <div class="cover-title">LFSQ MD<br><span>2026</span><br>PLAN</div>
-    <div class="cover-line"></div>
-    <div class="cover-desc">
-      IP Agency 협업을 통한 다양한 IP팝업과 시장 가능성 확인,<br>
-      신규 사업과 트렌드/메가 IP 라인업을 통한 새로운 성과 도출
+  <!-- ══════════════ SLIDE 1: Cover ══════════════ -->
+  <div class="slide active" id="slide-1">
+    <div class="topbar">
+      <span class="topbar-label">FY2026 LFSQ MD PLAN</span>
     </div>
-    <div class="cover-meta">
-      <div class="cover-meta-item">
-        <label>FISCAL YEAR</label>
-        <span>FY 2026</span>
+    <div class="s1-body" style="padding-top:80px;">
+      <div>
+        <p class="s1-team">LINEFRIENDS SQUARE * MD TEAM</p>
+        <div class="s1-title">LFSQ MD<br>2026 PLAN</div>
+        <div class="s1-rule"></div>
+        <p class="s1-sub">IP&amp;Brand 자산 구축과 Asset Portfolio 확보</p>
       </div>
-      <div class="cover-meta-item">
-        <label>DIVISION</label>
-        <span>MD Team</span>
-      </div>
-      <div class="cover-meta-item">
-        <label>STRATEGY</label>
-        <span>IP × Brand</span>
-      </div>
-    </div>
-    </div></div>
-
-  <div class="slide" id="slide-1">
-    <div class="slide-tag">01 · FY2025 REVIEW</div>
-    <div class="slide-title" style="font-size:36px;margin-bottom:4px">FY2025 MD Review</div>
-    <div class="slide-subtitle" style="margin-bottom:16px">IP Agency 협업을 통한 다양한 IP 팝업과 시장 가능성 확인<br>및 신규 사업과 트렌드 / 메가 IP 라인업을 통한 새로운 성과 도출</div>
-
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 24px;margin-bottom:16px">
-      <div style="font-size:9px;letter-spacing:2px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:14px;text-transform:uppercase">2025 핵심 신규사업</div>
-      <div style="display:flex;align-items:center;gap:0;position:relative">
-        <div style="position:absolute;top:50%;left:80px;right:80px;height:2px;background:var(--border);transform:translateY(-50%);z-index:0"></div>
-        <div style="font-size:11px;font-weight:700;color:var(--muted);min-width:60px;z-index:1;flex-shrink:0">2025 y</div>
-        <div style="flex:1;display:flex;justify-content:space-around;align-items:center;z-index:1">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="width:110px;height:110px;border-radius:50%;border:3px solid var(--accent);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-              <div style="font-size:14px;font-weight:800;line-height:1.2;color:var(--text)">IP<br>Agency</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="width:110px;height:110px;border-radius:50%;border:3px solid var(--accent);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-              <div style="font-size:13px;font-weight:800;line-height:1.3;color:var(--text)">캡슐토이<br><span style="color:var(--muted);font-size:10px;font-weight:400">(w.오늘의귀여움)</span></div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="width:110px;height:110px;border-radius:50%;border:3px solid var(--accent);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-              <div style="font-size:13px;font-weight:800;line-height:1.3;color:var(--text)">MEGA IP<br><span style="color:var(--muted);font-size:10px;font-weight:400">(w.성수점)</span></div>
-            </div>
-          </div>
+      <div class="s1-meta">
+        <div class="s1-meta-item">
+          <label>FISCAL YEAR</label>
+          <span>FY 2026</span>
+        </div>
+        <div class="s1-meta-item">
+          <label>DIVISION</label>
+          <span>MD Team</span>
+        </div>
+        <div class="s1-meta-item">
+          <label>STRATEGY</label>
+          <span>IP&amp;BRAND</span>
         </div>
       </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1">
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
-        <div style="position:relative;flex-shrink:0;height:110px">
-          <img id="img_bebe" alt="BEBE THE ORI" style="width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="padding:10px 12px;flex:1">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;line-height:1">1.2억</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text);margin:3px 0 1px">BEBE THE ORI</div>
-          <div style="font-size:10px;color:var(--muted)">베베 더 스쿨</div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);margin-top:4px">25.02</div>
-          <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);font-size:9px;color:var(--muted2);letter-spacing:0.5px">PARTNER — HAPE</div>
-        </div>
-      </div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
-        <div style="position:relative;flex-shrink:0;height:110px">
-          <img id="img_soobookz" alt="SOOBOOKZ" style="width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="padding:10px 12px;flex:1">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;line-height:1">2.0억</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text);margin:3px 0 1px">SOOBOOKZ</div>
-          <div style="font-size:10px;color:var(--muted)">수북한 잡화점</div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);margin-top:4px">25.04</div>
-          <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);font-size:9px;color:var(--muted2);letter-spacing:0.5px">PARTNER — HAPE</div>
-        </div>
-      </div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
-        <div style="position:relative;flex-shrink:0;height:110px">
-          <img id="img_linefriends" alt="오늘의 귀여움" style="width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="padding:10px 12px;flex:1">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;line-height:1">2.3억</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text);margin:3px 0 1px">오늘의 귀여움</div>
-          <div style="font-size:10px;color:var(--muted)">강남점 팝업</div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);margin-top:4px">25.10</div>
-          <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);font-size:9px;color:var(--muted2);letter-spacing:0.5px">PARTNER — PrimeTime</div>
-        </div>
-      </div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
-        <div style="position:relative;flex-shrink:0;height:110px">
-          <img id="img_ganadi" alt="듀 가나디" style="width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="padding:10px 12px;flex:1">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;line-height:1">11.8억</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text);margin:3px 0 1px">듀 가나디</div>
-          <div style="font-size:10px;color:var(--muted)">천사가나디 vs 악마가나디</div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);margin-top:4px">25.12</div>
-          <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);font-size:9px;color:var(--muted2);letter-spacing:0.5px">PARTNER — HNF</div>
-        </div>
-      </div>
-
     </div>
   </div>
 
+  <!-- ══════════════ SLIDE 2: FY2025 Review ══════════════ -->
   <div class="slide" id="slide-2">
-    <div class="slide-tag">02 · FY2025 LESSONS</div>
-    <div class="slide-title">FY2025 MD Lesson</div>
-    <div class="slide-subtitle">2025년 운영에서 얻은 인사이트와 개선 포인트</div>
-
-    <div class="lesson-grid">
-      <div class="lesson-card warn">
-        <div class="lesson-num">01</div>
-        <div class="lesson-head">VENUE 한계</div>
-        <div class="lesson-body">
-          <ul>
-            <li>주요 오프라인 매장 Fade-out / 축소</li>
-            <li>성수, 인사 등 주요 거점 채널 이슈</li>
-            <li>지속 가능한 오프라인 채널 확보 필요</li>
-          </ul>
-        </div>
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s-body" style="padding-top:68px;">
+      <div class="s-headline">FY2025 MD <span class="green">REVIEW</span></div>
+      <div class="s-subtitle">
+        - IP Agency 협업을 통한 다양한 IP 팝업과 시장 가능성 확인<br>
+        - 신규 사업과 트렌드 / 메가 IP 라인업을 통한 새로운 성과 도출
       </div>
-      <div class="lesson-card warn">
-        <div class="lesson-num">02</div>
-        <div class="lesson-head">IP Agency 장기 협업 한계</div>
-        <div class="lesson-body">
-          <ul>
-            <li>라이선시 Biz 한계</li>
-            <li>채널/글로벌 확대의 어려움</li>
-            <li>단발성 프로젝트 → 지속성 부재</li>
-            <li>주체적인 비즈니스 구조 필요</li>
-          </ul>
-        </div>
+      <!-- Timeline -->
+      <div class="timeline-strip">
+        <div class="tl-label"><strong>FY2025</strong>New biz</div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span style="font-size:12px;font-weight:900;">IP</span><span>Agency</span></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span>캡슐토이</span><small>(w. 오늘의귀여움)</small></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span>MEGA IP</span><small>(w. 성수점)</small></div>
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
       </div>
-    </div>
-
-    <div class="result-bar">
-      <div class="result-label">FY2025 전체 성과 요약</div>
-      <div class="result-stats">
-        <div class="result-stat">
-          <span class="result-val">17.3억</span>
-          <div class="result-desc">총 매출 (추정)</div>
+      <!-- Image cards -->
+      <div class="cards-row">
+        <div class="img-card">
+          <div class="img-box" onclick="triggerUpload('img-s2-1')">
+            <img id="img-s2-1-preview" src="" alt="">
+            <div class="img-placeholder">이미지</div>
+            <button class="img-upload-btn">+ 업로드</button>
+          </div>
+          <div>
+            <div class="card-stat">1.2억</div>
+            <div class="card-name">BEBE THE ORI</div>
+            <div class="card-sub">베베 더 스쿨</div>
+          </div>
         </div>
-        <div class="result-stat">
-          <span class="result-val">4개</span>
-          <div class="result-desc">주요 IP 팝업</div>
+        <div class="img-card">
+          <div class="img-box" onclick="triggerUpload('img-s2-2')">
+            <img id="img-s2-2-preview" src="" alt="">
+            <div class="img-placeholder">이미지</div>
+            <button class="img-upload-btn">+ 업로드</button>
+          </div>
+          <div>
+            <div class="card-stat">2.0억</div>
+            <div class="card-name">SOOBOOKZ</div>
+            <div class="card-sub">수북한 잡화점</div>
+          </div>
         </div>
-        <div class="result-stat">
-          <span class="result-val">3개</span>
-          <div class="result-desc">핵심 파트너사</div>
+        <div class="img-card">
+          <div class="img-box" onclick="triggerUpload('img-s2-3')">
+            <img id="img-s2-3-preview" src="" alt="">
+            <div class="img-placeholder">이미지</div>
+            <button class="img-upload-btn">+ 업로드</button>
+          </div>
+          <div>
+            <div class="card-stat">2.3억</div>
+            <div class="card-name">오늘의 귀여움</div>
+            <div class="card-sub">강남점 팝업</div>
+          </div>
         </div>
-        <div style="flex:1;border-left:1px solid var(--border);padding-left:24px">
-          <div style="font-size:12px;color:var(--muted);line-height:1.7">
-            성과는 있었으나 <strong style="color:var(--text)">지속 가능한 구조</strong>와
-            <strong style="color:var(--text)">채널 다변화</strong>의 필요성이 확인됨.<br>
-            2026년은 이를 보완한 전략 전환이 필요한 시점.
+        <div class="img-card">
+          <div class="img-box" onclick="triggerUpload('img-s2-4')">
+            <img id="img-s2-4-preview" src="" alt="">
+            <div class="img-placeholder">이미지</div>
+            <button class="img-upload-btn">+ 업로드</button>
+          </div>
+          <div>
+            <div class="card-stat">11.8억</div>
+            <div class="card-name">듀 가나디</div>
+            <div class="card-sub">천사가나디 vs 악마가나디</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ══════════════ SLIDE 3: FY2025 Lesson ══════════════ -->
   <div class="slide" id="slide-3">
-    <div class="slide-tag">03 · FY2026 MISSION</div>
-    <div class="slide-title">FY2026 MD Mission</div>
-    <div class="slide-subtitle">두 가지 전략 축을 기반으로 지속 가능한 MD 비즈니스 구조 수립</div>
-
-    <div class="mission-layout">
-      <div class="mission-left">
-        <div class="mission-statement">
-          2025년 IP Agency 협업의 성과와 한계를 바탕으로,<br>
-          <strong>전략적 IP 협업</strong>과 <strong>자체 브랜드</strong>를 두 축으로 삼아
-          LFSQ 고유의 MD 비즈니스를 구축한다.
-        </div>
-        <div class="mission-pillars">
-          <button class="pillar-btn green" onclick="openModal('ip')">
-            <div class="pillar-icon">🤝</div>
-            <div class="pillar-name">IP & Agency<br>전략적 협업</div>
-            <div class="pillar-desc">LFSQ 전략 IP 소싱 및 국내 리테일 확대. Agency를 ODM·MKT 목적으로 활용.</div>
-          </button>
-          <button class="pillar-btn yellow" onclick="openModal('brand')">
-            <div class="pillar-icon">🏷️</div>
-            <div class="pillar-name">Own Brand</div>
-            <div class="pillar-desc">LFSQ 플랫폼 감도 기반 자체 브랜드 기획. 리빙/라이프 채널 집중 전개.</div>
-          </button>
-        </div>
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s-body" style="padding-top:68px;">
+      <div class="s-headline">FY2025 MD <span class="green">LESSON</span></div>
+      <div class="s-subtitle">
+        - IP Agency 협업을 통한 다양한 IP 팝업과 시장 가능성 확인<br>
+        - 신규 사업과 트렌드 / 메가 IP 라인업을 통한 새로운 성과 도출
       </div>
-      <div class="mission-right">
-        <div class="target-card">
-          <div class="target-label">IP & Agency Target</div>
-          <div class="target-val">5~6억</div>
-          <div class="target-sub">전략 IP 협업 목표 매출</div>
+      <!-- Timeline -->
+      <div class="timeline-strip">
+        <div class="tl-label"><strong>FY2025</strong>New biz</div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span style="font-size:12px;font-weight:900;">IP</span><span>Agency</span></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span>캡슐토이</span><small>(w. 오늘의귀여움)</small></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span>MEGA IP</span><small>(w. 성수점)</small></div>
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
+      </div>
+      <!-- Lesson boxes -->
+      <div class="lesson-boxes">
+        <div class="lesson-box">
+          <h3>장기 협업 한계</h3>
+          <p>라이센싱 Biz, 채널 / 글로벌<br>확대의 어려움</p>
         </div>
-        <div class="target-card">
-          <div class="target-label">Private Brand Target</div>
-          <div class="target-val">1~2억</div>
-          <div class="target-sub">자체 브랜드 목표 매출</div>
-        </div>
-        <div class="target-card" style="border-color:rgba(200,240,100,.2)">
-          <div class="target-label">Total FY2026 Target</div>
-          <div class="target-val" style="font-size:52px">6~8억</div>
-          <div class="target-sub">통합 목표 매출</div>
+        <div class="lesson-box">
+          <h3>VENUE 한계</h3>
+          <p>주요 거점 Fade-out &amp; 축소</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ══════════════ SLIDE 4: FY2026 MD Plan Overview ══════════════ -->
   <div class="slide" id="slide-4">
-    <div class="slide-tag">04 · IP & AGENCY</div>
-    <div class="slide-title">① 전략 IP & Agency 협업</div>
-    <div class="slide-subtitle">1차 팝업 성과 기반 비즈니스 확장 전개 · Target 약 5~6억</div>
-
-    <div class="strategy-grid">
-      <div class="strategy-col">
-        <div class="strategy-step">STEP 1</div>
-        <div class="strategy-head">1차 팝업 성과 기반<br>비즈니스 확장 전개</div>
-        <ul class="strategy-body">
-          <li>LFSQ만의 OWN IP 소싱 및 국내 리테일 확대</li>
-          <li>IP Agency 인프라를 ODM 및 MKT 목적으로 활용</li>
-          <li>LINEFRIENDS SQUARE Retail (ON/OFF) 전개</li>
-          <li>누가사 (w. HAPE) — 26.04 론칭</li>
-        </ul>
-        <div class="highlight-row">
-          완판 볼륨 약 <span>2.6억</span> 달성 기반<br>
-          <div class="agency-tags" style="margin-top:8px">
-            <span class="tag accent">HAPE : 생산(ODM) 협업</span>
-            <span class="tag">26.2Q 확장</span>
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s-body" style="padding-top:68px;">
+      <div class="s-headline">FY2026 MD <span class="green">PLAN</span></div>
+      <div class="s-subtitle">
+        - 전략IP소싱 및 AGENCY(ODM&amp;MKT) 협업<br>
+        - PRIVATE BRAND 기획 및 외부채널 확장
+      </div>
+      <!-- Timeline -->
+      <div class="timeline-strip">
+        <div class="tl-label"><strong>FY2025</strong>New biz</div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span style="font-size:12px;font-weight:900;">IP</span><span>Agency</span></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span>캡슐토이</span><small>(w. 오늘의귀여움)</small></div>
+        <div class="tl-line"></div>
+        <div class="tl-circle"><span>MEGA IP</span><small>(w. 성수점)</small></div>
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
+      </div>
+      <!-- Plan boxes -->
+      <div class="plan-boxes">
+        <!-- Purple = clickable URL box -->
+        <div class="plan-box purple-bg" id="purple-box-4" onclick="toggleUrlOverlay('purple-box-4')">
+          <h3 class="green-text" style="color:rgba(255,255,255,0.9)!important;font-size:22px;">전략적 IP 소싱</h3>
+          <p style="color:rgba(255,255,255,0.85);">LFSQ 전략IP 소싱 및 비즈니스 확대<br><b>장기적 Plan 수립</b>  / Agency 별도 협업</p>
+          <div class="url-overlay-hint">🔗 URL 연결하기</div>
+          <div class="url-overlay" id="url-overlay-purple-box-4">
+            <div class="url-input-wrap">
+              <input type="url" placeholder="https://..." id="url-input-purple-box-4" onclick="event.stopPropagation()">
+              <div class="url-btn-row">
+                <button class="url-btn go" onclick="goUrl('purple-box-4', event)">이동 →</button>
+                <button class="url-btn cancel" onclick="cancelUrl('purple-box-4', event)">취소</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="strategy-col">
-        <div class="strategy-step">STEP 2</div>
-        <div class="strategy-head">트렌드 리서치 및 메가 IP 소싱<br>신규 비즈니스 & Agency 협업</div>
-        <ul class="strategy-body">
-          <li>지속적 IP 인프라 확장 및 컨택</li>
-          <li>로컬 B2B 채널 확대 및 프로젝트 진행 <span style="color:var(--muted2);font-size:10px">(ex: 센텀시티)</span></li>
-          <li>외부몰 단독 라인업 기획 <span style="color:var(--muted2);font-size:10px">(선물하기, 29cm…)</span></li>
-          <li>글로벌 확장, 콜라보, Agency 협업</li>
-        </ul>
-        <div class="highlight-row">
-          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Agency 역할 구분</div>
-          <div class="agency-tags">
-            <span class="tag blue">제조/생산 (HAPE)</span>
-            <span class="tag">프로젝트 협업 (Primetime)</span>
-          </div>
+        <div class="plan-box">
+          <h3 class="green-text">OWN BRAND</h3>
+          <p>LFSQ 플랫폼의 감도와 강점을 기반한 <b>자체 브랜드 기획</b><br><b>선물하기, 29 홈성수…</b> 등 라이프 / 리빙 <b>채널 확대 목표</b></p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ══════════════ SLIDE 5: Detailed Plan ══════════════ -->
   <div class="slide" id="slide-5">
-    <div class="slide-tag">05 · PRIVATE BRAND</div>
-    <div class="slide-title">② Private Brand</div>
-    <div class="slide-subtitle">고객 경험 및 수요 기반 플랫폼 자체 브랜드 기획 · Target 약 1~2억</div>
-
-    <div class="brand-layout">
-      <div class="brand-left">
-        <div class="brand-card">
-          <div class="brand-card-title">브랜드 방향</div>
-          <div style="font-size:13px;color:var(--text);line-height:1.7">
-            LFSQ 플랫폼의 감도와 강점을 기반한 자체 브랜드 기획
-          </div>
-          <div class="brand-pills">
-            <span class="pill">고객경험</span>
-            <span class="pill">공간기억</span>
-            <span class="pill">아이덴티티</span>
-            <span class="pill accent">LFSQ ONLY</span>
-          </div>
-        </div>
-        <div class="brand-card" style="flex:1">
-          <div class="brand-card-title">1차 제품 기획</div>
-          <div style="font-size:13px;color:var(--text);margin-bottom:12px">디퓨저 (리빙/라이프 카테고리)</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.7">
-            선물하기·29cm 타겟 리빙/라이프 브랜드로,<br>
-            디퓨저를 시작으로 LFSQ ONLY 라인업 확보.<br>
-            자체 트래픽 확보 및 지속 가능한 상시 매출 구조 수립 목표.
-          </div>
-        </div>
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s-body" style="padding-top:68px;">
+      <div class="s-headline">FY2026 MD <span class="green">PLAN</span></div>
+      <div class="section-label">
+        <span class="num">①</span> 전략 IP 소싱 &amp; Agency 협업방향
       </div>
-
-      <div class="brand-right">
-          <div class="new-brand-img"><img id="img_newbrand" alt="NEW BRAND"></div>
-          <div style="display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px">
-            <div class="product-img-small"><img id="img_diffuser" alt="Diffuser"></div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.6">
-              <div style="color:var(--text);font-weight:600;font-size:12px;margin-bottom:3px">브랜드 &amp; 1차 제품</div>
-              디퓨저 기획 진행 中<br>
-              <span style="color:var(--accent);font-family:'DM Mono',monospace;font-size:10px">Only Linefriends Square</span>
+      <div class="s5-grid">
+        <!-- LEFT: Step 1 -->
+        <div class="s5-col">
+          <div class="s5-step-label">Step1.</div>
+          <div class="s5-step-title"><b>1차 프로젝트 성과 확인</b> (ex : 누가사)</div>
+          <div class="s5-desc">- 단발성 프로젝트 협업을 통한 감도체크 &amp; 확장검토<br>(ODM, MKT, or 캡슐토이 등 Agency 인프라 기반 협업)</div>
+          <!-- Timeline -->
+          <div class="s5-timeline">
+            <div class="s5-tl-item">
+              <div class="s5-tl-circle filled" style="width:72px;height:72px;overflow:hidden;border-radius:50%;border:2px solid #333;">
+                <!-- 누가사 캐릭터 이미지 자리 -->
+                <span style="font-size:9px;color:#666;padding:4px;">누가사<br>(w.HAPE)</span>
+              </div>
+              <div class="s5-tl-dot"></div>
+              <div class="s5-tl-date">26.04</div>
+              <div class="s5-tl-tag" style="font-size:10px;color:#888;text-align:center;">Agency 헤이프<br>생산 (ODM) 협업</div>
             </div>
-          </div>
-        <div class="brand-card">
-          <div class="brand-card-title">채널 전략</div>
-          <div class="channel-grid">
-            <div class="channel-item">
-              <div class="ch-type">ON · 외부몰</div>
-              <div class="ch-names">선물하기, 29CM, 스마트스토어 外</div>
+            <div class="s5-tl-line"></div>
+            <div class="s5-tl-item">
+              <div class="s5-tl-circle" style="font-size:11px;font-weight:700;">NEW</div>
+              <div class="s5-tl-dot open"></div>
+              <div class="s5-tl-date">26.2Q</div>
             </div>
-            <div class="channel-item">
-              <div class="ch-type">OFF · 오프라인</div>
-              <div class="ch-names">29홈성수, HbyH 등 주요 거점</div>
-            </div>
-            <div class="channel-item" style="grid-column:span 2">
-              <div class="ch-type">B2B · 추가채널</div>
-              <div class="ch-names">로컬 B2B 및 외부 파트너십 확대</div>
+            <div class="s5-tl-line"></div>
+            <div class="s5-tl-item">
+              <div class="s5-tl-circle" style="font-size:11px;font-weight:700;">NEW</div>
+              <div class="s5-tl-dot open"></div>
+              <div class="s5-tl-date">26.3~4Q</div>
             </div>
           </div>
         </div>
-        <div class="brand-card" style="flex:1">
-          <div class="brand-card-title">Key Challenge</div>
-          <div class="challenge-list">
-            <div class="challenge-item">
-              <span class="challenge-icon">⚡</span>
-              <span>단발성 프로젝트 운영 → 주체적인 지속성 비즈니스 부재 해결</span>
-            </div>
-            <div class="challenge-item">
-              <span class="challenge-icon">📍</span>
-              <span>자체 매장 Fade-Out → 외부 채널 입점으로 상시 매출 전환</span>
-            </div>
-            <div class="challenge-item">
-              <span class="challenge-icon">🎯</span>
-              <span>리빙/라이프 카테고리 아이템으로 주요 거점 채널 입점</span>
-            </div>
+        <!-- RIGHT: Step 2 + Image -->
+        <div class="s5-col">
+          <div class="s5-step-label">Step2.</div>
+          <div class="s5-step-title"><b>비즈니스 확장 &amp; 전략 IP 소싱 지속</b></div>
+          <ul class="s5-bullet">
+            <li>외부몰 &amp; B2B 라인업 기획 및 채널 확대</li>
+            <li>라이센싱 협업 비즈니스 확장</li>
+            <li>지속 IP 컨택 및 인프라 구축</li>
+          </ul>
+          <div class="s5-img-box" onclick="triggerUpload('img-s5-1')" style="flex:1;margin-top:12px;">
+            <img id="img-s5-1-preview" src="" alt="">
+            <div class="img-placeholder">이미지</div>
+            <button class="img-upload-btn">+ 업로드</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ══════════════ SLIDE 6: Private Brand TBU ══════════════ -->
   <div class="slide" id="slide-6">
-    <div class="slide-tag">06 · BRAND REFERENCE</div>
-    <div class="slide-title">Brand Reference</div>
-    <div class="slide-subtitle">공간 아이덴티티 기반 자체 브랜드 — 레퍼런스 케이스</div>
-
-    <div class="ref-grid">
-      <div class="ref-card">
-        <div class="ref-img-hero"><img id="img_kyobo_brand" alt="교보문고"></div>
-        <div class="ref-brand">교보문고</div>
-        <div class="ref-product">THE SCENT OF PAGE</div>
-        <div class="ref-img-products"><img id="img_kyobo_products" alt="Kyobo products"></div>
-        <div class="ref-desc">
-          서점이라는 공간 경험을 향기로 번역한 자체 프래 fragrances 브랜드.
-          독서·종이·지식의 감각적 아이덴티티를 제품화.
-        </div>
-        <div class="ref-type">SPACE → PRODUCT</div>
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s-body" style="padding-top:68px;">
+      <div class="s-headline">FY2026 MD <span class="green">PLAN</span></div>
+      <div class="section-label">
+        <span class="num">②</span> <span class="green-text">LFSQ Private Brand</span>
       </div>
-      <div class="ref-card">
-        <div class="ref-img-hero"><img id="img_plaza_brand" alt="더 플라자"></div>
-        <div class="ref-brand">더 플라자 호텔</div>
-        <div class="ref-product">P Collection</div>
-        <div class="ref-img-products"><img id="img_plaza_products" alt="Plaza products"></div>
-        <div class="ref-desc">
-          호텔 공간의 고급스러운 감성을 담은 디퓨저·어메니티 컬렉션.
-          투숙 경험을 일상으로 연장하는 브랜드 전략.
-        </div>
-        <div class="ref-type">HOSPITALITY → LIFESTYLE</div>
-      </div>
-      <div class="ref-card">
-        <div class="ref-img-hero"><img id="img_paradise_brand" alt="파라다이스"></div>
-        <div class="ref-brand">파라다이스</div>
-        <div class="ref-product">SCENT OF PARADISE</div>
-        <div class="ref-img-products"><img id="img_paradise_products" alt="Paradise products"></div>
-        <div class="ref-desc">
-          엔터테인먼트·리조트 공간의 고유한 향기를 상품화.
-          공간 기억을 소비자가 일상에서 재경험할 수 있도록 설계.
-        </div>
-        <div class="ref-type">RESORT → RETAIL</div>
-      </div>
-    </div>
-
-    <div style="background:var(--surface);border:1px solid rgba(200,240,100,.2);border-radius:12px;padding:20px 24px;margin-top:16px">
-      <div style="font-size:10px;letter-spacing:2px;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:10px">LFSQ 적용 방향</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.7">
-        LINEFRIENDS SQUARE의 <strong style="color:var(--text)">팝업 문화·IP 경험·공간 감도</strong>를 담은 자체 프래그런스로 시작,
-        선물하기·29cm 등 라이프스타일 채널로 확장. <strong style="color:var(--accent)">공간을 기억하는 제품</strong>으로 포지셔닝.
-      </div>
+      <div class="tbu-box">TBU</div>
     </div>
   </div>
 
-</div><div class="modal-overlay" id="modal-ip" onclick="closeModal('ip', event)">
-  <div class="modal" style="position:relative">
-    <button class="modal-close" onclick="closeModal('ip')">✕</button>
-    <div class="modal-tag">STRATEGY 01</div>
-    <div class="modal-title">IP & AGENCY<br>전략적 협업</div>
-    <div class="target-badge">Target 약 5~6억</div>
-
-    <div class="modal-section">
-      <div class="modal-section-title">전략 방향</div>
-      <div class="modal-items">
-        <div class="modal-item"><span>LFSQ 전략 IP 소싱 및 <span class="modal-highlight">국내 리테일 확대</span></span></div>
-        <div class="modal-item"><span>IP Agency를 <span class="modal-highlight">ODM 및 MKT 목적</span>으로 활용하는 방향 전환</span></div>
-        <div class="modal-item"><span>생산처 활용 및 프로젝트 협업 병행</span></div>
+  <!-- ══════════════ SLIDE 7: Private Brand TBU (2) ══════════════ -->
+  <div class="slide" id="slide-7">
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s-body" style="padding-top:68px;">
+      <div class="s-headline">FY2026 MD <span class="green">PLAN</span></div>
+      <div class="section-label">
+        <span class="num">②</span> <span class="green-text">LFSQ Private Brand</span>
       </div>
-    </div>
-
-    <div class="modal-section">
-      <div class="modal-section-title">실행 단계</div>
-      <div class="step-cards">
-        <div class="step-card">
-          <div class="step-num">01</div>
-          <div class="step-title">1차 팝업 성과 기반 확장</div>
-          <div class="step-body">LINEFRIENDS SQUARE Retail (ON/OFF) 론칭. 누가사 (w. HAPE) 26.04. 완판 볼륨 약 2.6억 기반.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">02</div>
-          <div class="step-title">신규 비즈니스 & 글로벌</div>
-          <div class="step-body">트렌드 리서치 / 메가 IP 지속 소싱. 로컬 B2B(센텀시티 등) 채널 확대. 글로벌 확장 검토.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-section">
-      <div class="modal-section-title">Agency 파트너 역할</div>
-      <div class="modal-items">
-        <div class="modal-item"><span><span class="modal-highlight">HAPE</span> — 제조/생산 (ODM) 협업</span></div>
-        <div class="modal-item"><span><span class="modal-highlight">Primetime</span> — 프로젝트 협업 / MKT 연계</span></div>
-      </div>
+      <div class="tbu-box">TBU</div>
     </div>
   </div>
-</div>
 
-<div class="modal-overlay" id="modal-brand" onclick="closeModal('brand', event)">
-  <div class="modal" style="position:relative">
-    <button class="modal-close" onclick="closeModal('brand')">✕</button>
-    <div class="modal-tag">STRATEGY 02</div>
-    <div class="modal-title">OWN BRAND<br>Private Brand</div>
-    <div class="target-badge">Target 약 1~2억</div>
-
-    <div class="modal-section">
-      <div class="modal-section-title">브랜드 개요</div>
-      <div class="modal-items">
-        <div class="modal-item"><span>LFSQ 플랫폼의 <span class="modal-highlight">감도와 강점</span>을 기반한 자체 브랜드 기획</span></div>
-        <div class="modal-item"><span>LFSQ ONLY 라인업 확보를 통한 <span class="modal-highlight">자체 트래픽 확보</span></span></div>
-        <div class="modal-item"><span>선물하기, 29cm 타겟 <span class="modal-highlight">리빙/라이프 브랜드</span> (디퓨저 外) 전개</span></div>
-      </div>
-    </div>
-
-    <div class="modal-section">
-      <div class="modal-section-title">채널 전략</div>
-      <div class="step-cards">
-        <div class="step-card">
-          <div class="step-num">ON</div>
-          <div class="step-title">온라인 외부몰</div>
-          <div class="step-body">선물하기, 29CM, 스마트스토어 등. 지속 가능한 상시 매출 온라인 채널로의 전환.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">OFF</div>
-          <div class="step-title">오프라인 거점</div>
-          <div class="step-body">29홈성수, HbyH 등 주요 거점 채널 확보. 성수·인사 Fade out 이슈 대응.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-section">
-      <div class="modal-section-title">1차 제품 기획</div>
-      <div class="modal-items">
-        <div class="modal-item"><span>브랜드 & 1차 제품 (디퓨저) 기획 진행 중</span></div>
-        <div class="modal-item"><span>공간 기억 · 아이덴티티 기반 프래그런스 브랜드 포지셔닝</span></div>
-        <div class="modal-item"><span>교보문고 <em>The Scent of Page</em>, 더 플라자 <em>P Collection</em> 등 레퍼런스 검토</span></div>
-      </div>
+  <!-- ══════════════ SLIDE 8: Closing ══════════════ -->
+  <div class="slide" id="slide-8">
+    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
+    <div class="s8-body">
+      <div class="s8-title">LFSQ MD<br>2026 PLAN</div>
+      <div class="s8-rule"></div>
+      <div class="s8-msg">도움주신 모든 구성원 여러분들께 감사드리며,<br><b>2026년도 잘 부탁드립니다.</b></div>
     </div>
   </div>
+
+</div><!-- /slide-wrapper -->
+</div><!-- /stage -->
+
+<!-- Hidden file inputs -->
+<input class="file-input" type="file" id="file-img-s2-1" accept="image/*" onchange="loadImage(this,'img-s2-1-preview','img-s2-1')">
+<input class="file-input" type="file" id="file-img-s2-2" accept="image/*" onchange="loadImage(this,'img-s2-2-preview','img-s2-2')">
+<input class="file-input" type="file" id="file-img-s2-3" accept="image/*" onchange="loadImage(this,'img-s2-3-preview','img-s2-3')">
+<input class="file-input" type="file" id="file-img-s2-4" accept="image/*" onchange="loadImage(this,'img-s2-4-preview','img-s2-4')">
+<input class="file-input" type="file" id="file-img-s5-1" accept="image/*" onchange="loadImage(this,'img-s5-1-preview','img-s5-1')">
+
+<!-- Controls -->
+<div id="controls">
+  <button class="ctrl-btn" onclick="prevSlide()">&#8592;</button>
+  <div class="dot-nav" id="dots"></div>
+  <span id="slide-counter">1 / 8</span>
+  <button class="ctrl-btn" onclick="nextSlide()">&#8594;</button>
 </div>
 
 <script>
-  let current = 0;
-  const total = 7;
+  const TOTAL = 8;
+  let current = 1;
 
-  function buildDots() {
-    const nav = document.getElementById('dotNav');
-    nav.innerHTML = '';
-    for (let i = 0; i < total; i++) {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === current ? ' active' : '');
-      d.onclick = () => goTo(i);
-      nav.appendChild(d);
-    }
+  // Scale slides to fit viewport
+  function scaleSlide() {
+    const sw = 1440, sh = 810;
+    const vw = window.innerWidth, vh = window.innerHeight - 80;
+    const scale = Math.min(vw / sw, vh / sh);
+    const wrapper = document.getElementById('slide-wrapper');
+    wrapper.style.transform = `scale(${scale})`;
+    wrapper.style.width = sw + 'px';
+    wrapper.style.height = sh + 'px';
+  }
+  window.addEventListener('resize', scaleSlide);
+  scaleSlide();
+
+  // Dots
+  const dotContainer = document.getElementById('dots');
+  for (let i = 1; i <= TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotContainer.appendChild(d);
   }
 
   function goTo(n) {
-    const slides = document.querySelectorAll('.slide');
-    slides[current].classList.remove('active');
-    slides[current].classList.add('exit');
-    setTimeout(() => slides[current].classList.remove('exit'), 400);
-    current = n;
-    slides[current].classList.add('active');
-    document.getElementById('slideCounter').textContent =
-      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
-    document.getElementById('prevBtn').disabled = current === 0;
-    document.getElementById('nextBtn').disabled = current === total - 1;
-    document.getElementById('prevBtnSide').disabled = current === 0;
-    document.getElementById('nextBtnSide').disabled = current === total - 1;
-    buildDots();
+    document.getElementById('slide-' + current).classList.remove('active');
+    current = Math.max(1, Math.min(TOTAL, n));
+    const el = document.getElementById('slide-' + current);
+    el.classList.add('active', 'entering');
+    el.addEventListener('animationend', () => el.classList.remove('entering'), { once: true });
+    document.getElementById('slide-counter').textContent = current + ' / ' + TOTAL;
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i + 1 === current);
+    });
   }
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
 
-  function navigate(dir) {
-    const n = current + dir;
-    if (n >= 0 && n < total) goTo(n);
-  }
-
-  function openModal(type) {
-    document.getElementById('modal-' + type).classList.add('open');
-  }
-
-  function closeModal(type, e) {
-    if (!e || e.target === document.getElementById('modal-' + type)) {
-      document.getElementById('modal-' + type).classList.remove('open');
-    }
-  }
-
+  // Keyboard navigation
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
-    }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
   });
 
-  buildDots();
-  document.getElementById('prevBtn').disabled = true;
-  document.getElementById('prevBtnSide').disabled = true;
+  // Click right half to advance, left to go back
+  document.getElementById('stage').addEventListener('click', e => {
+    if (e.target.closest('#controls') || e.target.closest('.img-box') || e.target.closest('.plan-box.purple-bg') || e.target.closest('.url-overlay')) return;
+    e.clientX > window.innerWidth / 2 ? nextSlide() : prevSlide();
+  });
 
-  const IMGS = {
-    "image1": "data:image/jpeg;base64,...", // 생략 (기존 데이터 유지)
-    "image2": "data:image/jpeg;base64,...", // 생략
-    "image3": "data:image/png;base64,..."   // 생략
-  };
+  // Image upload
+  function triggerUpload(id) {
+    document.getElementById('file-' + id).click();
+  }
+  function loadImage(input, previewId, boxId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById(previewId);
+      img.src = e.target.result;
+      // find parent .img-box or .s5-img-box and mark has-img
+      const box = img.closest('.img-box, .s5-img-box');
+      if (box) box.classList.add('has-img');
+    };
+    reader.readAsDataURL(file);
+  }
 
-  // 이미지 할당 로직
-  window.onload = () => {
-    document.getElementById('img_bebe').src = IMGS.image1;
-    document.getElementById('img_soobookz').src = IMGS.image1;
-    document.getElementById('img_linefriends').src = IMGS.image1;
-    document.getElementById('img_ganadi').src = IMGS.image2;
-    document.getElementById('img_newbrand').src = IMGS.image3;
-    document.getElementById('img_diffuser').src = IMGS.image3;
-    document.getElementById('img_kyobo_brand').src = IMGS.image3;
-    document.getElementById('img_kyobo_products').src = IMGS.image3;
-    document.getElementById('img_plaza_brand').src = IMGS.image3;
-    document.getElementById('img_plaza_products').src = IMGS.image3;
-    document.getElementById('img_paradise_brand').src = IMGS.image3;
-    document.getElementById('img_paradise_products').src = IMGS.image3;
-    document.getElementById('coverHeroImg').src = IMGS.image2;
-  };
+  // Purple box URL overlay
+  function toggleUrlOverlay(boxId) {
+    const overlay = document.getElementById('url-overlay-' + boxId);
+    if (!overlay) return;
+    const isVisible = overlay.style.display === 'flex';
+    overlay.style.display = isVisible ? 'none' : 'flex';
+  }
+  function goUrl(boxId, e) {
+    e.stopPropagation();
+    const input = document.getElementById('url-input-' + boxId);
+    let url = input.value.trim();
+    if (!url) return;
+    if (!url.startsWith('http')) url = 'https://' + url;
+    window.open(url, '_blank');
+    cancelUrl(boxId, e);
+  }
+  function cancelUrl(boxId, e) {
+    e.stopPropagation();
+    const overlay = document.getElementById('url-overlay-' + boxId);
+    if (overlay) overlay.style.display = 'none';
+  }
 </script>
 </body>
 </html>
