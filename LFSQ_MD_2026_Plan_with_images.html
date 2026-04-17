@@ -920,7 +920,9 @@
     <button onclick="closeBrandModal()" style="position:absolute;top:12px;right:16px;z-index:10;background:rgba(0,0,0,0.6);border:none;color:rgba(255,255,255,0.7);font-size:22px;cursor:pointer;line-height:1;border-radius:50%;width:36px;height:36px;">✕</button>
     <iframe src="own-brand.html" style="width:100%;height:100%;border:none;display:block;"></iframe>
   </div>
-</div> style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="closeImgModal()">
+</div>
+
+<div id="img-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="closeImgModal()">
   <div style="position:relative;max-width:700px;width:90%;background:#111;border:1px solid rgba(0,207,255,0.25);border-radius:12px;padding:28px;box-shadow:0 0 60px rgba(0,150,255,0.2);" onclick="event.stopPropagation()">
     <button onclick="closeImgModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;line-height:1;">✕</button>
     <p style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.15em;color:#00cfff;margin-bottom:6px;">기대 플로우</p>
@@ -936,9 +938,8 @@ function openBrandModal() {
 function closeBrandModal() {
   document.getElementById('brand-modal').style.display = 'none';
 }
-
-  const m = document.getElementById('img-modal');
-  m.style.display = 'flex';
+function openImgModal() {
+  document.getElementById('img-modal').style.display = 'flex';
 }
 function closeImgModal() {
   document.getElementById('img-modal').style.display = 'none';
