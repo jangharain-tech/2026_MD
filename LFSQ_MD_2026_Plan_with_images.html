@@ -452,9 +452,10 @@
     margin-top: 24px;
   }
 
-  /* ─── SLIDE 8: Closing ─── */
+  /* ─── SLIDE 7: Closing ─── */
   .s8-body {
-    height: 100%;
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -818,24 +819,183 @@
       <div class="section-label">
         <span class="num">②</span><span class="typewriter-text">LFSQ Private Brand</span>
       </div>
-      <div class="tbu-box">TBU</div>
-    </div>
-  </div>
+      <div class="s5-grid">
 
-  <!-- ══════════════ SLIDE 7: Private Brand TBU (2) ══════════════ -->
-  <div class="slide" id="slide-7">
-    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
-    <div class="s-body" style="padding-top:68px;">
-      <div class="s-headline">FY<span class="blue-neon">2026</span> MD <span class="blue-neon">PLAN</span></div>
-      <div class="section-label">
-        <span class="num">②</span><span class="typewriter-text">LFSQ Private Brand</span>
+        <!-- LEFT: Step.1 OWN Brand 기획 -->
+        <div class="s5-col">
+          <div class="s5-step-label">Step1.</div>
+          <div class="s5-step-title"><b>OWN Brand 기획</b></div>
+          <div class="s5-desc">
+            LFSQ 플랫폼의 감도와 강점을 기반한 <b>자체 브랜드 기획</b><br>
+            선물하기, 29cm타겟 <b>리빙/라이프 브랜드 전개</b>
+          </div>
+          <div class="s5-img-box" style="flex:1;margin-top:12px;">
+            <div class="img-placeholder">이미지</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Step.2 채널 전략 & 베뉴 커버 -->
+        <div class="s5-col">
+          <div class="s5-step-label">Step2.</div>
+          <div class="s5-step-title"><b>채널 전략 &amp; 베뉴 커버</b></div>
+          <ul class="s5-bullet">
+            <li>지속가능한 <b>상시매출 확보</b> / 구조 수립</li>
+            <li>오프라인 <b>주요 거점 타겟</b></li>
+          </ul>
+
+          <!-- Tree diagram (dashed border box) -->
+          <div style="flex:1;border:1.5px dashed rgba(0,207,255,0.35);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:4px;margin-top:10px;min-height:0;">
+
+            <!-- Col 1: B2B / B2C -->
+            <div style="display:flex;flex-direction:column;gap:32px;flex-shrink:0;">
+              <div style="background:#1a3a55;border:2px solid #00cfff;color:#00cfff;font-weight:900;font-size:13px;padding:9px 14px;border-radius:6px;text-align:center;min-width:52px;">B2B</div>
+              <div style="background:#1a3a55;border:2px solid #00cfff;color:#00cfff;font-weight:900;font-size:13px;padding:9px 14px;border-radius:6px;text-align:center;min-width:52px;">B2C</div>
+            </div>
+
+            <!-- SVG 연결선 col1→col2 -->
+            <svg width="24" height="150" style="flex-shrink:0;overflow:visible;">
+              <line x1="0" y1="22" x2="12" y2="22" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="12" y1="22" x2="12" y2="50" stroke="rgba(0,207,255,0.55)" stroke-width="1.5"/>
+              <line x1="12" y1="50" x2="24" y2="50" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="12" y1="50" x2="12" y2="78" stroke="rgba(0,207,255,0.55)" stroke-width="1.5"/>
+              <line x1="12" y1="78" x2="24" y2="78" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="118" x2="12" y2="118" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="12" y1="100" x2="12" y2="118" stroke="rgba(0,207,255,0.55)" stroke-width="1.5"/>
+              <line x1="12" y1="100" x2="24" y2="100" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="12" y1="118" x2="12" y2="130" stroke="rgba(0,207,255,0.55)" stroke-width="1.5"/>
+              <line x1="12" y1="130" x2="24" y2="130" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
+
+            <!-- Col 2: 외부몰 / 기구 / 기구 / 납품 -->
+            <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 11px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">외부몰</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 11px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">기구</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 11px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">기구</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 11px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">납품</div>
+            </div>
+
+            <!-- SVG 연결선 col2→col3 -->
+            <svg width="20" height="150" style="flex-shrink:0;overflow:visible;">
+              <line x1="0" y1="18" x2="10" y2="18" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="10" y1="18" x2="10" y2="40" stroke="rgba(0,207,255,0.4)" stroke-width="1.5"/>
+              <line x1="10" y1="40" x2="20" y2="40" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="62" x2="20" y2="62" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="90" x2="10" y2="90" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="10" y1="90" x2="10" y2="114" stroke="rgba(0,207,255,0.4)" stroke-width="1.5"/>
+              <line x1="10" y1="114" x2="20" y2="114" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="120" x2="20" y2="120" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
+
+            <!-- Col 3: 결과 채널 -->
+            <div style="display:flex;flex-direction:column;gap:5px;flex:1;">
+              <div style="background:#00cfff;color:#0a0a0a;font-weight:800;font-size:12px;padding:7px 12px;border-radius:6px;">선물하기, 29CM…</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.42);padding:0 4px;">ㄴ 지속 가능한 상시 매출 온라인 채널로의 전환</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.8);">스마트스토어 외</div>
+              <div style="background:#00cfff;color:#0a0a0a;font-weight:800;font-size:12px;padding:7px 12px;border-radius:6px;margin-top:2px;">29홈성수, HbyH…</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.42);padding:0 4px;">ㄴ 주요 거점 채널 확보 (성수, 인사 Fade out 이슈)</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.8);">추가 채널</div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
-      <div class="tbu-box">TBU</div>
+    </div>
+  </div>
+      <div style="display:flex;gap:28px;flex:1;min-height:0;">
+
+        <!-- LEFT: Step.1 OWN Brand 기획 -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:1px;font-family:'DM Sans',sans-serif;">Step.1</div>
+          <div style="font-size:18px;font-weight:800;color:#00cfff;margin-bottom:4px;">OWN Brand 기획</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.88);font-weight:400;line-height:1.8;">
+            LFSQ 플랫폼의 감도와 강점을 기반한 <b style="color:#fff;">자체 브랜드 기획</b><br>
+            선물하기, 29cm타겟 <b style="color:#fff;">리빙/라이프 브랜드 전개</b>
+          </div>
+          <div style="flex:1;background:linear-gradient(135deg,#0d3060 0%,#1a3a55 100%);border-radius:10px;border:1.5px solid rgba(0,207,255,0.2);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.25);font-size:14px;margin-top:4px;">
+            이미지
+          </div>
+        </div>
+
+        <!-- RIGHT: Step.2 채널 전략 & 베뉴 커버 (tree diagram) -->
+        <div style="flex:1.4;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:1px;font-family:'DM Sans',sans-serif;">Step.2</div>
+          <div style="font-size:18px;font-weight:800;color:#00cfff;margin-bottom:4px;">채널 전략 &amp; 베뉴 커버</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.88);font-weight:400;line-height:1.8;margin-bottom:6px;">
+            – 지속가능한 <b style="color:#fff;">상시매출 확보</b> / 구조 수립<br>
+            – 오프라인 <b style="color:#fff;">주요 거점 타겟</b>
+          </div>
+
+          <!-- Tree diagram (dashed border box) -->
+          <div style="flex:1;border:1.5px dashed rgba(0,207,255,0.35);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:0;min-height:0;">
+
+            <!-- Col 1: B2B / B2C -->
+            <div style="display:flex;flex-direction:column;gap:28px;margin-right:8px;">
+              <div style="background:#1a3a55;border:2px solid #00cfff;color:#00cfff;font-weight:900;font-size:14px;padding:10px 16px;border-radius:6px;text-align:center;min-width:58px;">B2B</div>
+              <div style="background:#1a3a55;border:2px solid #00cfff;color:#00cfff;font-weight:900;font-size:14px;padding:10px 16px;border-radius:6px;text-align:center;min-width:58px;">B2C</div>
+            </div>
+
+            <!-- Connector lines col1→col2 (SVG) -->
+            <svg width="28" height="130" style="flex-shrink:0;">
+              <!-- B2B → 외부몰 -->
+              <line x1="0" y1="22" x2="14" y2="22" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="14" y1="22" x2="14" y2="45" stroke="rgba(0,207,255,0.5)" stroke-width="1.5"/>
+              <line x1="14" y1="45" x2="28" y2="45" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <!-- B2B → 기구 -->
+              <line x1="14" y1="45" x2="14" y2="72" stroke="rgba(0,207,255,0.5)" stroke-width="1.5"/>
+              <line x1="14" y1="72" x2="28" y2="72" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <!-- B2C → 기구 -->
+              <line x1="0" y1="108" x2="14" y2="108" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="14" y1="88" x2="14" y2="108" stroke="rgba(0,207,255,0.5)" stroke-width="1.5"/>
+              <line x1="14" y1="88" x2="28" y2="88" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <!-- B2C → 납품 -->
+              <line x1="14" y1="108" x2="14" y2="118" stroke="rgba(0,207,255,0.5)" stroke-width="1.5"/>
+              <line x1="14" y1="118" x2="28" y2="118" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
+
+            <!-- Col 2: 외부몰 / 기구 / 기구 / 납품 -->
+            <div style="display:flex;flex-direction:column;gap:8px;margin-right:8px;">
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">외부몰</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">기구</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">기구</div>
+              <div style="border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;">납품</div>
+            </div>
+
+            <!-- Connector lines col2→col3 -->
+            <svg width="22" height="140" style="flex-shrink:0;">
+              <line x1="0" y1="20" x2="11" y2="20" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="11" y1="20" x2="11" y2="42" stroke="rgba(0,207,255,0.4)" stroke-width="1.5"/>
+              <line x1="11" y1="42" x2="22" y2="42" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="64" x2="22" y2="64" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="96" x2="11" y2="96" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="11" y1="96" x2="11" y2="120" stroke="rgba(0,207,255,0.4)" stroke-width="1.5"/>
+              <line x1="11" y1="120" x2="22" y2="120" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="0" y1="126" x2="22" y2="126" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
+
+            <!-- Col 3: 결과 채널 -->
+            <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+              <!-- 선물하기 29CM (강조) -->
+              <div style="background:#00cfff;color:#0a0a0a;font-weight:800;font-size:12px;padding:7px 12px;border-radius:6px;">선물하기, 29CM…</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);padding:0 4px;">ㄴ 지속 가능한 상시 매출 온라인 채널로의 전환</div>
+              <!-- 스마트스토어 외 -->
+              <div style="border:1.5px solid rgba(255,255,255,0.25);border-radius:6px;padding:7px 12px;font-size:12px;color:rgba(255,255,255,0.8);">스마트스토어 외</div>
+              <!-- 29홈성수 (강조) -->
+              <div style="background:#00cfff;color:#0a0a0a;font-weight:800;font-size:12px;padding:7px 12px;border-radius:6px;margin-top:4px;">29홈성수, HbyH…</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);padding:0 4px;">ㄴ 주요 거점 채널 확보 (성수, 인사 Fade out 이슈)</div>
+              <!-- 추가 채널 -->
+              <div style="border:1.5px solid rgba(255,255,255,0.25);border-radius:6px;padding:7px 12px;font-size:12px;color:rgba(255,255,255,0.8);">추가 채널</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- ══════════════ SLIDE 8: Closing ══════════════ -->
-  <div class="slide" id="slide-8">
+  <!-- ══════════════ SLIDE 7: Closing ══════════════ -->
+  <div class="slide" id="slide-7">
     <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
     <div class="s8-body">
       <div class="s8-title"><span style="color:#00cfff;">LFSQ MD</span><br>FY2026</div>
@@ -862,7 +1022,7 @@
 </div>
 
 <script>
-  const TOTAL = 8;
+  const TOTAL = 7;
   let current = 1;
 
   // Scale slides to fit viewport
