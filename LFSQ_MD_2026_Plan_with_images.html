@@ -453,8 +453,7 @@
 
   /* ─── SLIDE 7: Closing ─── */
   .s8-body {
-    position: absolute;
-    inset: 0;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -999,11 +998,14 @@
 
   <!-- ══════════════ SLIDE 7: Closing ══════════════ -->
   <div class="slide" id="slide-7">
-    <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
-    <div class="s8-body">
-      <div class="s8-title"><span style="color:#00cfff;">LFSQ MD</span><br>FY2026</div>
-      <div class="s8-rule"></div>
-      <div class="s8-msg">도움주신 모든 구성원 여러분들께 감사드리며,<br><b>2026년도 잘 부탁드립니다.</b></div>
+    <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px;box-sizing:border-box;background:#0d0d0d;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:110px;line-height:0.92;color:#e8e8e8;letter-spacing:0.04em;">
+        <span style="color:#00cfff;">LFSQ MD</span><br>FY2026
+      </div>
+      <div style="width:80px;height:2px;background:#00cfff;margin:28px auto;"></div>
+      <div style="font-size:16px;color:#ffffff;line-height:1.8;font-weight:300;">
+        도움주신 모든 구성원 여러분들께 감사드리며,<br><b style="font-weight:700;">2026년도 잘 부탁드립니다.</b>
+      </div>
     </div>
   </div>
 
@@ -1059,10 +1061,15 @@
     const outEl = document.getElementById('slide-' + prev);
     const inEl  = document.getElementById('slide-' + next);
 
+    // 퇴장 슬라이드를 뒤로
+    outEl.style.zIndex = '0';
+    inEl.style.zIndex = '1';
+
     // 현재 슬라이드 퇴장
     outEl.classList.add(dir === 'next' ? 'exit-prev' : 'exit-next');
     outEl.addEventListener('animationend', () => {
       outEl.classList.remove('active', 'exit-prev', 'exit-next');
+      outEl.style.zIndex = '';
     }, { once: true });
 
     // 새 슬라이드 진입
@@ -1070,6 +1077,7 @@
     inEl.classList.add('active', dir === 'next' ? 'enter-next' : 'enter-prev');
     inEl.addEventListener('animationend', () => {
       inEl.classList.remove('enter-next', 'enter-prev');
+      inEl.style.zIndex = '';
     }, { once: true });
 
     document.getElementById('slide-counter').textContent = current + ' / ' + TOTAL;
@@ -1083,7 +1091,6 @@
       slide.querySelectorAll('.typewriter-text').forEach(el => {
         el.classList.remove('typing');
         el.style.width = '0';
-        // measure exact text width
         el.style.width = 'auto';
         const fullWidth = el.scrollWidth + 'px';
         el.style.setProperty('--tw-width', fullWidth);
