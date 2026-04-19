@@ -814,7 +814,7 @@
   </div>
 
   <!-- ══════════════ SLIDE 6: Private Brand TBU ══════════════ -->
-  <div class="slide" id="slide-6">
+  <div class="slide" id="slide-6" style="overflow:hidden !important;">
     <div class="topbar"><span class="topbar-label">FY2026 LFSQ MD PLAN</span></div>
     <div class="s-body" style="padding-top:68px;">
       <div class="s-headline">FY<span class="blue-neon">2026</span> MD <span class="blue-neon">PLAN</span></div>
@@ -855,7 +855,7 @@
             </div>
 
             <!-- SVG 연결선 col1→col2 -->
-            <svg width="24" height="150" style="flex-shrink:0;overflow:visible;">
+            <svg width="24" height="150" style="flex-shrink:0;overflow:hidden;">
               <line x1="0" y1="22" x2="12" y2="22" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
               <line x1="12" y1="22" x2="12" y2="50" stroke="rgba(0,207,255,0.55)" stroke-width="1.5"/>
               <line x1="12" y1="50" x2="24" y2="50" stroke="rgba(0,207,255,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
@@ -877,7 +877,7 @@
             </div>
 
             <!-- SVG 연결선 col2→col3 -->
-            <svg width="20" height="150" style="flex-shrink:0;overflow:visible;">
+            <svg width="20" height="150" style="flex-shrink:0;overflow:hidden;">
               <line x1="0" y1="18" x2="10" y2="18" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
               <line x1="10" y1="18" x2="10" y2="40" stroke="rgba(0,207,255,0.4)" stroke-width="1.5"/>
               <line x1="10" y1="40" x2="20" y2="40" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
@@ -938,7 +938,7 @@
             </div>
 
             <!-- Connector lines col1→col2 (SVG) -->
-            <svg width="28" height="130" style="flex-shrink:0;">
+            <svg width="28" height="130" style="flex-shrink:0;" style="overflow:hidden">
               <!-- B2B → 외부몰 -->
               <line x1="0" y1="22" x2="14" y2="22" stroke="rgba(0,207,255,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
               <line x1="14" y1="22" x2="14" y2="45" stroke="rgba(0,207,255,0.5)" stroke-width="1.5"/>
@@ -964,7 +964,7 @@
             </div>
 
             <!-- Connector lines col2→col3 -->
-            <svg width="22" height="140" style="flex-shrink:0;">
+            <svg width="22" height="140" style="flex-shrink:0;" style="overflow:hidden">
               <line x1="0" y1="20" x2="11" y2="20" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
               <line x1="11" y1="20" x2="11" y2="42" stroke="rgba(0,207,255,0.4)" stroke-width="1.5"/>
               <line x1="11" y1="42" x2="22" y2="42" stroke="rgba(0,207,255,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
@@ -997,14 +997,16 @@
   </div>
 
   <!-- ══════════════ SLIDE 7: Closing ══════════════ -->
-  <div class="slide" id="slide-7">
-    <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px;box-sizing:border-box;background:#0d0d0d;">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:110px;line-height:0.92;color:#e8e8e8;letter-spacing:0.04em;">
-        <span style="color:#00cfff;">LFSQ MD</span><br>FY2026
+  <div class="slide" id="slide-7" style="background:#0d0d0d;z-index:0;">
+    <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px;box-sizing:border-box;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:110px;line-height:0.92;letter-spacing:0.04em;">
+        <span style="color:#00cfff;">LFSQ MD</span><br>
+        <span style="color:#e8e8e8;">FY2026</span>
       </div>
       <div style="width:80px;height:2px;background:#00cfff;margin:28px auto;"></div>
       <div style="font-size:16px;color:#ffffff;line-height:1.8;font-weight:300;">
-        도움주신 모든 구성원 여러분들께 감사드리며,<br><b style="font-weight:700;">2026년도 잘 부탁드립니다.</b>
+        도움주신 모든 구성원 여러분들께 감사드리며,<br>
+        <b style="font-weight:700;">2026년도 잘 부탁드립니다.</b>
       </div>
     </div>
   </div>
@@ -1022,7 +1024,7 @@
 <div id="controls">
   <button class="ctrl-btn" onclick="prevSlide()">&#8592;</button>
   <div class="dot-nav" id="dots"></div>
-  <span id="slide-counter">1 / 8</span>
+  <span id="slide-counter">1 / 7</span>
   <button class="ctrl-btn" onclick="nextSlide()">&#8594;</button>
 </div>
 
@@ -1061,23 +1063,24 @@
     const outEl = document.getElementById('slide-' + prev);
     const inEl  = document.getElementById('slide-' + next);
 
-    // 퇴장 슬라이드를 뒤로
-    outEl.style.zIndex = '0';
-    inEl.style.zIndex = '1';
+    // 새 슬라이드를 즉시 위에
+    inEl.style.zIndex = '2';
+    outEl.style.zIndex = '1';
+    // 퇴장 슬라이드 overflow 즉시 차단
+    outEl.style.overflow = 'hidden';
 
-    // 현재 슬라이드 퇴장
     outEl.classList.add(dir === 'next' ? 'exit-prev' : 'exit-next');
     outEl.addEventListener('animationend', () => {
       outEl.classList.remove('active', 'exit-prev', 'exit-next');
       outEl.style.zIndex = '';
+      outEl.style.overflow = '';
+      inEl.style.zIndex = '';
     }, { once: true });
 
-    // 새 슬라이드 진입
     current = next;
     inEl.classList.add('active', dir === 'next' ? 'enter-next' : 'enter-prev');
     inEl.addEventListener('animationend', () => {
       inEl.classList.remove('enter-next', 'enter-prev');
-      inEl.style.zIndex = '';
     }, { once: true });
 
     document.getElementById('slide-counter').textContent = current + ' / ' + TOTAL;
@@ -1085,7 +1088,6 @@
       d.classList.toggle('active', i + 1 === current);
     });
 
-    // typewriter effect on section labels
     const slide = document.getElementById('slide-' + current);
     if (slide) {
       slide.querySelectorAll('.typewriter-text').forEach(el => {
